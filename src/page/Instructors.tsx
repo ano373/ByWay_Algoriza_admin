@@ -1,3 +1,54 @@
+import { InstructorTable } from "../components/table/InstructorTable";
+import { ActionColumn } from "../components/table/ActionColumn";
+import { StarRating } from "../components/StarRating";
+import { useState } from "react";
+import { TableToolBar } from "../components/table/TableToolBar";
+
 export default function InstructorsPage() {
-  return <div className="flex content-center"> Instructors page</div>;
+  const [rating, setRating] = useState(2);
+
+  const data = [
+    {
+      name: "John Doe",
+      jobTitle: "Developer",
+      Rate: <StarRating value={rating} editable onChange={setRating} />,
+      Action: <ActionColumn />,
+    },
+    {
+      name: "Jane Smith",
+      jobTitle: "Manager",
+      Rate: <StarRating value={2} />,
+      Action: <ActionColumn />,
+    },
+    {
+      name: "Alice Bro",
+      jobTitle: "Designer",
+      Rate: <StarRating value={3} />,
+      Action: <ActionColumn />,
+    },
+    {
+      name: "Alice Bro",
+      jobTitle: "Designer",
+      Rate: <StarRating value={4} />,
+      Action: <ActionColumn />,
+    },
+    {
+      name: "Alice Bro",
+      jobTitle: "Designer",
+      Rate: <StarRating value={5} />,
+      Action: <ActionColumn />,
+    },
+  ];
+
+  return (
+    <div className="flex-1 p-8 bg-gray-50 w-full h-full">
+      <div className="text-4xl"> Instructors </div>
+      <hr className="border-gray-400 my-10 " />
+
+      <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg ">
+        <TableToolBar />
+        <InstructorTable rows={data} />
+      </div>
+    </div>
+  );
 }
