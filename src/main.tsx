@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./page/Dashboard.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import InstructorsPage from "./page/Instructors.tsx";
-import { LayoutWithSideBar } from "./components/LayoutWithSideBar.tsx";
+import { LayoutWithSideBar } from "./components/UI/LayoutWithSideBar.tsx";
 import CoursesPage from "./page/courses.tsx";
 
 const router = createBrowserRouter([

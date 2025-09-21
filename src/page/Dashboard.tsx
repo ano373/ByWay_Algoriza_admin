@@ -3,8 +3,8 @@ import { FaRegUser } from "react-icons/fa";
 import { IoMdListBox } from "react-icons/io";
 import { BsCollection } from "react-icons/bs";
 
-import StatCard from "../components/StatCard";
-import Statistics from "../components/Statistics";
+import StatCard from "../components/Dashboard/StatCard";
+import Statistics from "../components/Dashboard/Statistics";
 
 import { useEffect, useState } from "react";
 import type { DashboardSummary } from "../types/dashboard";

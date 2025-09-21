@@ -1,8 +1,8 @@
-import { InstructorTable } from "../components/table/InstructorTable";
-import { ActionColumn } from "../components/table/ActionColumn";
-import { StarRating } from "../components/StarRating";
+import { InstructorTable } from "../components/Instructor/table/InstructorTable";
+import { ActionColumn } from "../components/Instructor/table/ActionColumn";
+import { StarRating } from "../components/Instructor/StarRating";
 import { useState } from "react";
-import { TableToolBar } from "../components/table/TableToolBar";
+import { TableToolBar } from "../components/Instructor/table/TableToolBar";
 
 export default function InstructorsPage() {
   const [rating, setRating] = useState(2);
