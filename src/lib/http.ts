@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const http = axios.create({
-  baseURL: "https://example.com",
+  baseURL: "https://mock.apidog.com",
   timeout: 10000,
 });
 

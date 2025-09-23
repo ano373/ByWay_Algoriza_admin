@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "../assets/ByWay-Logo.svg";
+import logo from "../../assets/ByWay-Logo.svg";
 import { FaHome } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { BsCollection } from "react-icons/bs";

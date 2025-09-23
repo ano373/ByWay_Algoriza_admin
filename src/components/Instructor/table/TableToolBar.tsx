@@ -1,6 +1,12 @@
 import { FiSearch } from "react-icons/fi";
+import Modal from "../Modal";
+import InstructorForm from "../InstructorForm";
+import { useState } from "react";
+// import type { Mode } from "../../../types/general";
 
 export function TableToolBar() {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="flex items-center justify-between font-bold text-2xl px-8 py-8">
       <div className="flex items-center">
@@ -10,10 +16,17 @@ export function TableToolBar() {
         </span>
       </div>
       <div className="flex gap-4">
-        <button className="text-white text-base font-small px-4 py-2 bg-black rounded-2xl">
+        {/* add instructor modal */}
+        <button
+          className="text-white text-base font-normal px-4 py-2 bg-black rounded-2xl hover:bg-gray-800 transition-colors"
+          onClick={() => setOpen(true)}
+        >
           Add Instructor
         </button>
-
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <InstructorForm mode="edit" onClose={() => setOpen(false)} />
+        </Modal>
+        {/* search bar */}
         <div className="flex items-center relative">
           <input
             type="search"
