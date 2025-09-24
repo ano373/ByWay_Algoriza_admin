@@ -1,45 +1,84 @@
 import { useState } from "react";
 import type { Mode } from "../../types/general";
 import { StarRating } from "./StarRating";
-import { type JobTitle, jobTitles } from "../../types/Instrcutor";
+import {
+  type Instructor,
+  type InstructorFormData,
+  type JobTitle,
+  jobTitles,
+} from "../../types/Instrcutor";
 import SelectMenu from "../UI/SelectMenu";
 
 interface InstructorFormProps {
-  id?: number;
+  initialData?: Instructor;
   mode: Mode;
   onClose: () => void;
+  onSubmit?: (data: InstructorFormData) => void;
 }
 
 export default function InstructorForm({
-  id,
+  initialData,
   mode,
   onClose,
+  onSubmit,
 }: InstructorFormProps) {
   const isView = mode === "view";
-  const isEdit = mode === "edit";
+  //const isEdit = mode === "edit";
   const isAdd = mode === "add";
 
-  const [rating, setRating] = useState(0);
-  const [jobTitle, setJobTitle] = useState<JobTitle | "">("");
+  const [formData, setFormData] = useState<InstructorFormData>(() => {
+    if (initialData) {
+      // Convert Instructor to InstructorFormData
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { createdAt, ...formFields } = initialData;
+      return formFields;
+    }
+    return {
+      name: "",
+      jobTitle: "Fullstack Developer",
+      rating: 0,
+      description: "",
+    };
+  });
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, name: e.target.value }));
+  };
+
+  const handleJobTitleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      jobTitle: e.target.value as JobTitle,
+    }));
+  };
+
+  const handleRatingChange = (newRating: number) => {
+    setFormData((prev) => ({ ...prev, rating: newRating }));
+  };
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({ ...prev, description: e.target.value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit?.(formData);
+    onClose();
+  };
 
   return (
-    <form
-      className="flex flex-col gap-3"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (isAdd) {
-          console.log("Adding instructor...");
-        } else if (isEdit) {
-          console.log("Editing instructor...");
-        }
-        onClose();
-      }}
-    >
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <h2 className="text-lg font-bold capitalize">{mode} Instructor</h2>
 
       <div>
         <label className="block text-sm font-medium mb-1">Name</label>
         <input
+          name="name"
+          value={formData.name}
+          onChange={handleNameChange}
+          disabled={isView}
           type="text"
           className="w-full border border-gray-300 rounded-lg px-3 py-2"
         />
@@ -49,8 +88,8 @@ export default function InstructorForm({
         <div className="flex-1">
           <SelectMenu
             label="Job Title"
-            value={jobTitle}
-            onChange={(e) => setJobTitle(e.target.value as JobTitle | "")}
+            value={formData.jobTitle}
+            onChange={handleJobTitleChange}
           >
             {jobTitles.map((title) => (
               <option key={title} value={title}>
@@ -62,7 +101,11 @@ export default function InstructorForm({
         <div className="flex-1 ">
           <label className="block text-sm font-medium mb-1">Rate</label>
           <div className="flex justify-start">
-            <StarRating value={rating} editable={true} onChange={setRating} />
+            <StarRating
+              value={formData.rating}
+              editable={!isView}
+              onChange={handleRatingChange}
+            />
           </div>
         </div>
       </div>
@@ -70,6 +113,10 @@ export default function InstructorForm({
       <div>
         <label className="block text-sm font-medium mb-1">Description</label>
         <textarea
+          name="description"
+          disabled={isView}
+          value={formData.description}
+          onChange={handleDescriptionChange}
           rows={4}
           className="w-full border border-gray-300 rounded-lg px-3 py-2"
         ></textarea>

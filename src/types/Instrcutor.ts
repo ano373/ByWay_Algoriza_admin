@@ -19,6 +19,15 @@ export interface Instructor {
   createdAt: Date;
 }
 
+export interface InstructorFormData {
+  instructorId?: number;
+  profileImageUrl?: string;
+  name: string;
+  jobTitle: JobTitle;
+  rating: number;
+  description: string;
+}
+
 export interface InstructorsListResponse {
   data: Instructor[];
   meta: Meta;

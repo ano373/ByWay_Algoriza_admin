@@ -1,11 +1,15 @@
-import type { Instructor, InstructorsListResponse } from "../types/Instrcutor";
+import type {
+  Instructor,
+  InstructorFormData,
+  InstructorsListResponse,
+} from "../types/Instrcutor";
 import axios from "axios";
 
-async function fetchInstructorById(): Promise<Instructor> {
-  const res = await axios.get<Instructor>(
-    `https://mock.apidog.com/m1/1072040-1060319-default/admin/instructors/1`
+async function fetchInstructorById(id: number): Promise<Instructor> {
+  const response = await axios.get<Instructor>(
+    `https://mock.apidog.com/m1/1072040-1060319-default/admin/instructors/${id}`
   );
-  return res.data;
+  return response.data;
 }
 
 async function fetchInstructors(page = 1): Promise<InstructorsListResponse> {
@@ -24,8 +28,36 @@ async function deleteInstructor(id: number): Promise<void> {
   );
 }
 
+export async function addInstructor(
+  payload: InstructorFormData
+): Promise<Instructor> {
+  const response = await axios.post(
+    `http://127.0.0.1:3658/m1/1072040-1060319-default/admin/instructors`,
+    payload,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  return response.data;
+}
+
+export async function updateInstructor(
+  payload: InstructorFormData
+): Promise<Instructor> {
+  const response = await axios.put(
+    `http://127.0.0.1:3658/m1/1072040-1060319-default/admin/instructors/${payload.instructorId}`,
+    payload,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  return response.data;
+}
+
 export const InstructorApi = {
   fetchInstructors,
   deleteInstructor,
   fetchInstructorById,
+  addInstructor,
+  updateInstructor,
 };

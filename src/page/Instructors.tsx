@@ -3,7 +3,7 @@ import { ActionColumn } from "../components/UI/ActionColumn";
 import { StarRating } from "../components/Instructor/StarRating";
 import { useCallback, useMemo, useState } from "react";
 import { TableToolBar } from "../components/Instructor/table/TableToolBar";
-import type { Instructor } from "../types/Instrcutor";
+import type { Instructor, InstructorFormData } from "../types/Instrcutor";
 import { useInstructors } from "../hooks/useInsturctors";
 import { RiNumber1, RiNumber2 } from "react-icons/ri";
 import Modal from "../components/Instructor/Modal";
@@ -12,16 +12,20 @@ import { DeletePrompt } from "../components/UI/DeletePrompt";
 import InstructorForm from "../components/Instructor/InstructorForm";
 
 export default function InstructorsPage() {
-  const [editInstructor, setEditInstructor] = useState<{ id: number } | null>(
-    null
-  );
-  const [viewInstructor, setViewInstructor] = useState<{ id: number } | null>(
-    null
-  );
+  const [editInstructor, setEditInstructor] = useState<{
+    Instructor: Instructor;
+  } | null>(null);
+
+  const [viewInstructor, setViewInstructor] = useState<{
+    Instructor: Instructor;
+  } | null>(null);
+
   const [deleteInstructor, setDeleteInstructor] = useState<{
     id: number;
     name: string;
   } | null>(null);
+
+  const [addInstructor, setAddInstructor] = useState<boolean>(false);
 
   const { instructors, setInstructors, isLoading, error, page, setPage, meta } =
     useInstructors();
@@ -42,6 +46,30 @@ export default function InstructorsPage() {
     }
   }, [deleteInstructor, setInstructors]);
 
+  const handleEditInstructor = async (data: InstructorFormData) => {
+    try {
+      const updatedInstructor = await InstructorApi.updateInstructor(data);
+      setInstructors((instructors) =>
+        instructors.map((inst) =>
+          inst.instructorId === updatedInstructor.instructorId
+            ? updatedInstructor
+            : inst
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update instructor:", error);
+    }
+  };
+
+  const handleAddInstructor = async (data: InstructorFormData) => {
+    try {
+      const created = await InstructorApi.addInstructor(data);
+      setInstructors((instructors) => [...instructors, created]);
+    } catch (error) {
+      console.error("Failed to add instructor:", error);
+    }
+  };
+
   const tableRows = useMemo(() => {
     return instructors.map((instructor: Instructor) => ({
       name: instructor.name,
@@ -51,12 +79,12 @@ export default function InstructorsPage() {
         <ActionColumn
           onView={() =>
             setViewInstructor({
-              id: instructor.instructorId,
+              Instructor: instructor,
             })
           }
           onEdit={() =>
             setEditInstructor({
-              id: instructor.instructorId,
+              Instructor: instructor,
             })
           }
           onDelete={() =>
@@ -78,11 +106,16 @@ export default function InstructorsPage() {
       <RiNumber2 size={22} onClick={() => setPage(2)} />
 
       <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg ">
-        <TableToolBar />
+        <TableToolBar
+          onAddClick={() => setAddInstructor(true)}
+          onSearch={function (query: string): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
         <InstructorTable rows={tableRows} />
       </div>
 
-      {/* actionColum logic */}
+      {/* user action logic */}
       {deleteInstructor && (
         <Modal open={true} onClose={() => setDeleteInstructor(null)}>
           <DeletePrompt
@@ -96,13 +129,32 @@ export default function InstructorsPage() {
 
       {viewInstructor && (
         <Modal open={true} onClose={() => setViewInstructor(null)}>
-          <InstructorForm mode="view" onClose={() => setViewInstructor(null)} />
+          <InstructorForm
+            initialData={viewInstructor.Instructor}
+            mode="view"
+            onClose={() => setViewInstructor(null)}
+          />
         </Modal>
       )}
 
       {editInstructor && (
         <Modal open={true} onClose={() => setEditInstructor(null)}>
-          <InstructorForm mode="edit" onClose={() => setEditInstructor(null)} />
+          <InstructorForm
+            initialData={editInstructor.Instructor}
+            mode="edit"
+            onClose={() => setEditInstructor(null)}
+            onSubmit={handleEditInstructor}
+          />
+        </Modal>
+      )}
+
+      {addInstructor && (
+        <Modal open={true} onClose={() => setAddInstructor(false)}>
+          <InstructorForm
+            onSubmit={handleAddInstructor}
+            mode="add"
+            onClose={() => setAddInstructor(false)}
+          />
         </Modal>
       )}
     </div>
