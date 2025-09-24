@@ -1,7 +1,7 @@
 import { InstructorTable } from "../components/Instructor/table/InstructorTable";
 import { ActionColumn } from "../components/UI/ActionColumn";
 import { StarRating } from "../components/Instructor/StarRating";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { TableToolBar } from "../components/Instructor/table/TableToolBar";
 import type { Instructor, InstructorFormData } from "../types/Instrcutor";
 import { useInstructors } from "../hooks/useInsturctors";
@@ -10,41 +10,29 @@ import Modal from "../components/Instructor/Modal";
 import { InstructorApi } from "../api/InstructorApi";
 import { DeletePrompt } from "../components/UI/DeletePrompt";
 import InstructorForm from "../components/Instructor/InstructorForm";
+import { useInstructorModals } from "../hooks/useInstructorModals";
 
 export default function InstructorsPage() {
-  const [editInstructor, setEditInstructor] = useState<{
-    Instructor: Instructor;
-  } | null>(null);
-
-  const [viewInstructor, setViewInstructor] = useState<{
-    Instructor: Instructor;
-  } | null>(null);
-
-  const [deleteInstructor, setDeleteInstructor] = useState<{
-    id: number;
-    name: string;
-  } | null>(null);
-
-  const [addInstructor, setAddInstructor] = useState<boolean>(false);
-
   const { instructors, setInstructors, isLoading, error, page, setPage, meta } =
     useInstructors();
+  const { states, actions, closers } = useInstructorModals();
 
   const handleConfirmDelete = useCallback(async () => {
-    if (!deleteInstructor) return;
+    if (!states.deleteInstructor) return;
 
     try {
-      await InstructorApi.deleteInstructor(deleteInstructor.id);
-
+      await InstructorApi.deleteInstructor(states.deleteInstructor.id);
       setInstructors((instructors) =>
-        instructors.filter((inst) => inst.instructorId !== deleteInstructor.id)
+        instructors.filter(
+          (inst) => inst.instructorId !== states.deleteInstructor!.id
+        )
       );
     } catch (error) {
       console.error("Failed to delete instructor:", error);
     } finally {
-      setDeleteInstructor(null);
+      closers.closeDelete();
     }
-  }, [deleteInstructor, setInstructors]);
+  }, [states.deleteInstructor, setInstructors, closers]);
 
   const handleEditInstructor = async (data: InstructorFormData) => {
     try {
@@ -56,6 +44,7 @@ export default function InstructorsPage() {
             : inst
         )
       );
+      closers.closeEdit();
     } catch (error) {
       console.error("Failed to update instructor:", error);
     }
@@ -65,6 +54,7 @@ export default function InstructorsPage() {
     try {
       const created = await InstructorApi.addInstructor(data);
       setInstructors((instructors) => [...instructors, created]);
+      closers.closeAdd();
     } catch (error) {
       console.error("Failed to add instructor:", error);
     }
@@ -77,37 +67,26 @@ export default function InstructorsPage() {
       Rate: <StarRating value={instructor.rating} editable={false} />,
       Action: (
         <ActionColumn
-          onView={() =>
-            setViewInstructor({
-              Instructor: instructor,
-            })
-          }
-          onEdit={() =>
-            setEditInstructor({
-              Instructor: instructor,
-            })
-          }
+          onView={() => actions.openView(instructor)}
+          onEdit={() => actions.openEdit(instructor)}
           onDelete={() =>
-            setDeleteInstructor({
-              id: instructor.instructorId,
-              name: instructor.name,
-            })
+            actions.openDelete(instructor.instructorId, instructor.name)
           }
         />
       ),
     }));
-  }, [instructors]);
+  }, [instructors, actions]);
 
   return (
     <div className="flex-1 p-8 bg-gray-50 w-full h-full">
-      <div className="text-4xl"> Instructors </div>
-      <hr className="border-gray-400 my-10 " />
+      <div className="text-4xl">Instructors</div>
+      <hr className="border-gray-400 my-10" />
       <RiNumber1 size={22} onClick={() => setPage(1)} />
       <RiNumber2 size={22} onClick={() => setPage(2)} />
 
-      <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg ">
+      <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg">
         <TableToolBar
-          onAddClick={() => setAddInstructor(true)}
+          onAddClick={actions.openAdd}
           onSearch={function (query: string): void {
             throw new Error("Function not implemented.");
           }}
@@ -115,45 +94,45 @@ export default function InstructorsPage() {
         <InstructorTable rows={tableRows} />
       </div>
 
-      {/* user action logic */}
-      {deleteInstructor && (
-        <Modal open={true} onClose={() => setDeleteInstructor(null)}>
+      {/* Modal Logic */}
+      {states.deleteInstructor && (
+        <Modal open={true} onClose={closers.closeDelete}>
           <DeletePrompt
             label="Instructor"
-            name={deleteInstructor.name}
+            name={states.deleteInstructor.name}
             onConfirm={handleConfirmDelete}
-            onCancel={() => setDeleteInstructor(null)}
+            onCancel={closers.closeDelete}
           />
         </Modal>
       )}
 
-      {viewInstructor && (
-        <Modal open={true} onClose={() => setViewInstructor(null)}>
+      {states.viewInstructor && (
+        <Modal open={true} onClose={closers.closeView}>
           <InstructorForm
-            initialData={viewInstructor.Instructor}
+            initialData={states.viewInstructor.Instructor}
             mode="view"
-            onClose={() => setViewInstructor(null)}
+            onClose={closers.closeView}
           />
         </Modal>
       )}
 
-      {editInstructor && (
-        <Modal open={true} onClose={() => setEditInstructor(null)}>
+      {states.editInstructor && (
+        <Modal open={true} onClose={closers.closeEdit}>
           <InstructorForm
-            initialData={editInstructor.Instructor}
+            initialData={states.editInstructor.Instructor}
             mode="edit"
-            onClose={() => setEditInstructor(null)}
+            onClose={closers.closeEdit}
             onSubmit={handleEditInstructor}
           />
         </Modal>
       )}
 
-      {addInstructor && (
-        <Modal open={true} onClose={() => setAddInstructor(false)}>
+      {states.addInstructor && (
+        <Modal open={true} onClose={closers.closeAdd}>
           <InstructorForm
             onSubmit={handleAddInstructor}
             mode="add"
-            onClose={() => setAddInstructor(false)}
+            onClose={closers.closeAdd}
           />
         </Modal>
       )}
