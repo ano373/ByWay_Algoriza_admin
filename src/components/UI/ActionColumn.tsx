@@ -2,32 +2,26 @@ import { MdOutlineRemoveRedEye as ViewIcon } from "react-icons/md";
 import { CiEdit as EditIcon } from "react-icons/ci";
 import { FiTrash as DeleteIcon } from "react-icons/fi";
 
-export const ActionColumn = () => {
-  const handleView = () => {
-    console.log("View clicked");
-  };
+interface ActionColumnProps {
+  onView: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}
 
-  const handleEdit = () => {
-    console.log("Edit clicked");
-  };
-
-  const handleDelete = () => {
-    console.log("Delete clicked");
-  };
-
+export function ActionColumn({ onView, onEdit, onDelete }: ActionColumnProps) {
   const iconButtonClass = "p-1 rounded hover:bg-gray-50 cursor-pointer";
 
   return (
     <div className="flex flex-1 gap-3 justify-center">
-      <button onClick={handleView} className={iconButtonClass}>
+      <button onClick={onView} className={iconButtonClass}>
         <ViewIcon className="text-blue-400" size={20} />
       </button>
-      <button onClick={handleEdit} className={iconButtonClass}>
+      <button onClick={onEdit} className={iconButtonClass}>
         <EditIcon className="text-blue-400" size={20} />
       </button>
-      <button onClick={handleDelete} className={iconButtonClass}>
+      <button onClick={onDelete} className={iconButtonClass}>
         <DeleteIcon className="text-red-500" size={20} />
       </button>
     </div>
   );
-};
+}

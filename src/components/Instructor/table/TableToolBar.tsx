@@ -15,6 +15,7 @@ export function TableToolBar() {
           200
         </span>
       </div>
+
       <div className="flex gap-4">
         {/* add instructor modal */}
         <button
@@ -24,7 +25,7 @@ export function TableToolBar() {
           Add Instructor
         </button>
         <Modal open={open} onClose={() => setOpen(false)}>
-          <InstructorForm mode="edit" onClose={() => setOpen(false)} />
+          <InstructorForm mode="add" onClose={() => setOpen(false)} />
         </Modal>
         {/* search bar */}
         <div className="flex items-center relative">

@@ -1,54 +1,110 @@
 import { InstructorTable } from "../components/Instructor/table/InstructorTable";
-import { ActionColumn } from "../components/Instructor/table/ActionColumn";
+import { ActionColumn } from "../components/UI/ActionColumn";
 import { StarRating } from "../components/Instructor/StarRating";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TableToolBar } from "../components/Instructor/table/TableToolBar";
+import type { Instructor } from "../types/Instrcutor";
+import { useInstructors } from "../hooks/useInsturctors";
+import { RiNumber1, RiNumber2 } from "react-icons/ri";
+import Modal from "../components/Instructor/Modal";
+import { InstructorApi } from "../api/InstructorApi";
+import { DeletePrompt } from "../components/UI/DeletePrompt";
+import InstructorForm from "../components/Instructor/InstructorForm";
 
 export default function InstructorsPage() {
-  const [rating, setRating] = useState(2);
+  const [editInstructor, setEditInstructor] = useState<{ id: number } | null>(
+    null
+  );
+  const [viewInstructor, setViewInstructor] = useState<{ id: number } | null>(
+    null
+  );
+  const [deleteInstructor, setDeleteInstructor] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
-  const data = [
-    {
-      name: "John Doe",
-      jobTitle: "Developer",
-      Rate: <StarRating value={rating} editable onChange={setRating} />,
-      Action: <ActionColumn />,
-    },
-    {
-      name: "Jane Smith",
-      jobTitle: "Manager",
-      Rate: <StarRating value={2} />,
-      Action: <ActionColumn />,
-    },
-    {
-      name: "Alice Bro",
-      jobTitle: "Designer",
-      Rate: <StarRating value={3} />,
-      Action: <ActionColumn />,
-    },
-    {
-      name: "Alice Bro",
-      jobTitle: "Designer",
-      Rate: <StarRating value={4} />,
-      Action: <ActionColumn />,
-    },
-    {
-      name: "Alice Bro",
-      jobTitle: "Designer",
-      Rate: <StarRating value={5} />,
-      Action: <ActionColumn />,
-    },
-  ];
+  const { instructors, setInstructors, isLoading, error, page, setPage, meta } =
+    useInstructors();
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!deleteInstructor) return;
+
+    try {
+      await InstructorApi.deleteInstructor(deleteInstructor.id);
+
+      setInstructors((instructors) =>
+        instructors.filter((inst) => inst.instructorId !== deleteInstructor.id)
+      );
+    } catch (error) {
+      console.error("Failed to delete instructor:", error);
+    } finally {
+      setDeleteInstructor(null);
+    }
+  }, [deleteInstructor, setInstructors]);
+
+  const tableRows = useMemo(() => {
+    return instructors.map((instructor: Instructor) => ({
+      name: instructor.name,
+      jobTitle: instructor.jobTitle,
+      Rate: <StarRating value={instructor.rating} editable={false} />,
+      Action: (
+        <ActionColumn
+          onView={() =>
+            setViewInstructor({
+              id: instructor.instructorId,
+            })
+          }
+          onEdit={() =>
+            setEditInstructor({
+              id: instructor.instructorId,
+            })
+          }
+          onDelete={() =>
+            setDeleteInstructor({
+              id: instructor.instructorId,
+              name: instructor.name,
+            })
+          }
+        />
+      ),
+    }));
+  }, [instructors]);
 
   return (
     <div className="flex-1 p-8 bg-gray-50 w-full h-full">
       <div className="text-4xl"> Instructors </div>
       <hr className="border-gray-400 my-10 " />
+      <RiNumber1 size={22} onClick={() => setPage(1)} />
+      <RiNumber2 size={22} onClick={() => setPage(2)} />
 
       <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg ">
         <TableToolBar />
-        <InstructorTable rows={data} />
+        <InstructorTable rows={tableRows} />
       </div>
+
+      {/* actionColum logic */}
+      {deleteInstructor && (
+        <Modal open={true} onClose={() => setDeleteInstructor(null)}>
+          <DeletePrompt
+            label="Instructor"
+            name={deleteInstructor.name}
+            onConfirm={handleConfirmDelete}
+            onCancel={() => setDeleteInstructor(null)}
+          />
+        </Modal>
+      )}
+
+      {viewInstructor && (
+        <Modal open={true} onClose={() => setViewInstructor(null)}>
+          <InstructorForm mode="view" onClose={() => setViewInstructor(null)} />
+        </Modal>
+      )}
+
+      {editInstructor && (
+        <Modal open={true} onClose={() => setEditInstructor(null)}>
+          <InstructorForm mode="edit" onClose={() => setEditInstructor(null)} />
+        </Modal>
+      )}
     </div>
   );
 }

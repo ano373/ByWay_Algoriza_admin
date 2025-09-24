@@ -8,13 +8,13 @@ import Statistics from "../components/Dashboard/Statistics";
 
 import { useEffect, useState } from "react";
 import type { DashboardSummary } from "../types/dashboard";
-import { fetchDashboardSummary } from "../api/DashboardApi";
+import { DashboardApi } from "../api/DashboardApi";
 
 export default function Dashboard() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
 
   useEffect(() => {
-    fetchDashboardSummary().then(setSummary).catch(console.error);
+    DashboardApi.fetchDashboardSummary().then(setSummary).catch(console.error);
   }, []);
 
   return (

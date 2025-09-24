@@ -1,3 +1,5 @@
+import type { Meta } from "./general";
+
 export const jobTitles = [
   "Fullstack Developer",
   "Frontend Developer",
@@ -15,4 +17,9 @@ export interface Instructor {
   rating: number;
   description: string;
   createdAt: Date;
+}
+
+export interface InstructorsListResponse {
+  data: Instructor[];
+  meta: Meta;
 }
