@@ -45,9 +45,9 @@ export async function updateInstructor(
 }
 
 export const InstructorApi = {
-  fetchInstructors,
-  deleteInstructor,
-  fetchInstructorById,
-  addInstructor,
-  updateInstructor,
+  getAll: fetchInstructors,
+  deleteById: deleteInstructor,
+  getById: fetchInstructorById,
+  add: addInstructor,
+  update: updateInstructor,
 };

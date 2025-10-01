@@ -1,13 +1,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./page/Dashboard.tsx";
+import App from "./page/DashboardPage.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import InstructorsPage from "./page/Instructors.tsx";
+import InstructorsPage from "./page/InstructorsPage.tsx";
 import { LayoutWithSideBar } from "./components/UI/LayoutWithSideBar.tsx";
-import CoursesPage from "./page/courses.tsx";
+import CoursesPage from "./page/coursesPage.tsx";
 import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
