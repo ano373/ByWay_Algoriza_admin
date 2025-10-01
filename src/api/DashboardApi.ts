@@ -1,9 +1,10 @@
-import axios from "axios";
+import { http } from "../lib/http";
 import type { DashboardSummary } from "../types/dashboard";
+import type { ApiResponse } from "../types/general";
 
-async function fetchDashboardSummary(): Promise<DashboardSummary> {
-  const res = await axios.get<DashboardSummary>(
-    "https://mock.apidog.com/m1/1072040-1060319-default/admin/dashboard/summary"
+async function fetchDashboardSummary(): Promise<ApiResponse<DashboardSummary>> {
+  const res = await http.get<ApiResponse<DashboardSummary>>(
+    "/dashboard/summary"
   );
   return res.data;
 }

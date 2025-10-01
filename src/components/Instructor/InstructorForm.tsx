@@ -5,7 +5,7 @@ import {
   type Instructor,
   type InstructorFormData,
   type JobTitle,
-  jobTitles,
+  JobTitles,
 } from "../../types/Instrcutor";
 import SelectMenu from "../UI/SelectMenu";
 
@@ -35,7 +35,7 @@ export default function InstructorForm({
     }
     return {
       name: "",
-      jobTitle: "Fullstack Developer",
+      jobTitle: JobTitles.values[0],
       rating: 0,
       description: "",
     };
@@ -91,9 +91,9 @@ export default function InstructorForm({
             value={formData.jobTitle}
             onChange={handleJobTitleChange}
           >
-            {jobTitles.map((title) => (
-              <option key={title} value={title}>
-                {title}
+            {JobTitles.configs.map((job) => (
+              <option key={job.value} value={job.value}>
+                {job.label}
               </option>
             ))}
           </SelectMenu>

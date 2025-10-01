@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import { InstructorApi } from "../api/InstructorApi";
 import type { Instructor } from "../types/Instrcutor";
-import type { Meta } from "../types/general";
+// import type { Meta } from "../types/general";
+import type { InstructorPaginationQuery } from "../types/Instrcutor";
 
 export const useInstructors = () => {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
-  const [meta, setMeta] = useState<Meta | null>(null);
+  // const [meta, setMeta] = useState<Meta | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [page, setPage] = useState<number>(1);
+  const [error, setError] = useState<string | null>(null);
+  const [InstructorPaginationQuery, setInstructorPaginationQuery] =
+    useState<InstructorPaginationQuery>({
+      page: 1,
+      limit: 10,
+      search: "",
+    });
 
   useEffect(() => {
     const loadInstructors = async () => {
@@ -16,21 +22,32 @@ export const useInstructors = () => {
       setError(null);
 
       try {
-        const response = await InstructorApi.fetchInstructors(page);
-        setInstructors(response.data);
-        setMeta(response.meta);
+        const response = await InstructorApi.fetchInstructors(
+          InstructorPaginationQuery
+        );
+        console.log(response);
+        setInstructors(Array.isArray(response.value) ? response.value : []);
+        // setMeta(response.meta);
       } catch (err) {
+        setInstructors([]); // fallback to empty array on error
         if (err instanceof Error) {
-          setError(err);
+          setError(err.message);
         } else {
-          setError(new Error("An unknown error occurred"));
+          new Error("An unknown error occurred");
         }
       } finally {
         setIsLoading(false);
       }
     };
     loadInstructors();
-  }, [page]);
-
-  return { instructors, setInstructors, meta, isLoading, error, page, setPage };
+  }, [InstructorPaginationQuery]);
+  return {
+    instructors,
+    setInstructors,
+    setInstructorPaginationQuery,
+    // meta,
+    isLoading,
+    error,
+    setError,
+  };
 };

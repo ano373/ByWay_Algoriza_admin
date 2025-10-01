@@ -1,23 +1,15 @@
-import type { Meta } from "./general";
+// import type { Meta } from "./general";
 
-export const jobTitles = [
-  "Fullstack Developer",
-  "Frontend Developer",
-  "Backend Developer",
-  "UX/XI Designer",
-] as const;
+import { createEnumConfig } from "./general";
 
-export type JobTitle = (typeof jobTitles)[number];
+export const JobTitles = createEnumConfig([
+  { label: "Fullstack Developer", value: "FullstackDeveloper" },
+  { label: "Frontend Developer", value: "FrontendDeveloper" },
+  { label: "Backend Developer", value: "BackendDeveloper" },
+  { label: "UI/UXDesigner", value: "UIUXDesigner" },
+] as const);
 
-export interface Instructor {
-  instructorId: number;
-  profileImageUrl?: string;
-  name: string;
-  jobTitle: JobTitle;
-  rating: number;
-  description: string;
-  createdAt: Date;
-}
+export type JobTitle = (typeof JobTitles.values)[number];
 
 export interface InstructorFormData {
   instructorId?: number;
@@ -28,7 +20,20 @@ export interface InstructorFormData {
   description: string;
 }
 
-export interface InstructorsListResponse {
-  data: Instructor[];
-  meta: Meta;
+export interface InstructorPaginationQuery {
+  limit?: number;
+  page?: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: string;
+}
+
+export interface Instructor {
+  instructorId: number;
+  profileImageUrl?: string;
+  name: string;
+  jobTitle: JobTitle;
+  rating: number;
+  description: string;
+  createdAt: string;
 }

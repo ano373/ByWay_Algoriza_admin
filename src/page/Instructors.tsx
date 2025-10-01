@@ -3,7 +3,11 @@ import { ActionColumn } from "../components/UI/ActionColumn";
 import { StarRating } from "../components/Instructor/StarRating";
 import { useCallback, useMemo } from "react";
 import { TableToolBar } from "../components/Instructor/table/TableToolBar";
-import type { Instructor, InstructorFormData } from "../types/Instrcutor";
+import {
+  JobTitles,
+  type Instructor,
+  type InstructorFormData,
+} from "../types/Instrcutor";
 import { useInstructors } from "../hooks/useInsturctors";
 import { RiNumber1, RiNumber2 } from "react-icons/ri";
 import Modal from "../components/Instructor/Modal";
@@ -13,8 +17,14 @@ import InstructorForm from "../components/Instructor/InstructorForm";
 import { useInstructorModals } from "../hooks/useInstructorModals";
 
 export default function InstructorsPage() {
-  const { instructors, setInstructors, isLoading, error, page, setPage, meta } =
-    useInstructors();
+  const {
+    instructors,
+    setInstructors,
+    isLoading,
+    error,
+    setInstructorPaginationQuery,
+    // meta,
+  } = useInstructors();
   const { states, actions, closers } = useInstructorModals();
 
   const handleConfirmDelete = useCallback(async () => {
@@ -39,8 +49,8 @@ export default function InstructorsPage() {
       const updatedInstructor = await InstructorApi.updateInstructor(data);
       setInstructors((instructors) =>
         instructors.map((inst) =>
-          inst.instructorId === updatedInstructor.instructorId
-            ? updatedInstructor
+          inst.instructorId === updatedInstructor.value.instructorId
+            ? updatedInstructor.value
             : inst
         )
       );
@@ -53,7 +63,7 @@ export default function InstructorsPage() {
   const handleAddInstructor = async (data: InstructorFormData) => {
     try {
       const created = await InstructorApi.addInstructor(data);
-      setInstructors((instructors) => [...instructors, created]);
+      setInstructors((instructors) => [created.value, ...instructors]);
       closers.closeAdd();
     } catch (error) {
       console.error("Failed to add instructor:", error);
@@ -63,7 +73,7 @@ export default function InstructorsPage() {
   const tableRows = useMemo(() => {
     return instructors.map((instructor: Instructor) => ({
       name: instructor.name,
-      jobTitle: instructor.jobTitle,
+      jobTitle: JobTitles.toLabel(instructor.jobTitle),
       Rate: <StarRating value={instructor.rating} editable={false} />,
       Action: (
         <ActionColumn
@@ -81,8 +91,18 @@ export default function InstructorsPage() {
     <div className="flex-1 p-8 bg-gray-50 w-full h-full">
       <div className="text-4xl">Instructors</div>
       <hr className="border-gray-400 my-10" />
-      <RiNumber1 size={22} onClick={() => setPage(1)} />
-      <RiNumber2 size={22} onClick={() => setPage(2)} />
+      <RiNumber1
+        size={22}
+        onClick={() =>
+          setInstructorPaginationQuery((prev) => ({ ...prev, page: 1 }))
+        }
+      />
+      <RiNumber2
+        size={22}
+        onClick={() =>
+          setInstructorPaginationQuery((prev) => ({ ...prev, page: 2 }))
+        }
+      />
 
       <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg">
         <TableToolBar
