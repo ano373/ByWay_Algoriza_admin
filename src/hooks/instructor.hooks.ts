@@ -1,9 +1,4 @@
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { InstructorApi } from "../api/InstructorApi";
 import type {
   Instructor,
@@ -24,7 +19,7 @@ export function useInstructors(params?: InstructorPaginationQuery) {
   return useQuery({
     queryKey: ["instructors", params],
     queryFn: () => InstructorApi.getAll(params),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 }
 
