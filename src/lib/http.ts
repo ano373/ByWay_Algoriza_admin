@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 export const http = axios.create({
   baseURL: "http://localhost:5184/api",
-  timeout: 10000,
+  timeout: 5000,
 });
 
 const Admin_token = import.meta.env.VITE_ADMIN_TOKEN;
@@ -37,7 +37,10 @@ http.interceptors.response.use(
         duration: 6000,
       });
     } else {
-      toast.error(error.response?.data?.message || "An error occurred");
+      toast.error(error.response?.data?.message || "Server unavailable", {
+        id: "server-error",
+        duration: 3000,
+      });
     }
 
     return Promise.reject(error);

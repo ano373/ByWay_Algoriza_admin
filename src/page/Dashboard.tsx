@@ -5,17 +5,21 @@ import { BsCollection } from "react-icons/bs";
 
 import StatCard from "../components/Dashboard/StatCard";
 import Statistics from "../components/Dashboard/Statistics";
-
-import { useEffect, useState } from "react";
-import type { DashboardSummaryResponse } from "../types/dashboard";
+import { LoadingSpinner } from "../components/UI/LoadingSpinner";
 import { DashboardApi } from "../api/DashboardApi";
+import { ErrorMessage } from "../components/UI/ErrorMessage";
 
 export default function Dashboard() {
-  const [summary, setSummary] = useState<DashboardSummaryResponse | null>(null);
+  const {
+    data: summary,
+    isLoading,
+    error,
+    refetch,
+  } = DashboardApi.useSummary();
 
-  useEffect(() => {
-    DashboardApi.fetchDashboardSummary().then(setSummary).catch(console.error);
-  }, []);
+  if (isLoading) return <LoadingSpinner />;
+  if (error)
+    return <ErrorMessage message="Failed to load summary" onRetry={refetch} />;
 
   return (
     <div className="flex-1 p-8 bg-gray-50 w-full h-full">
@@ -26,21 +30,21 @@ export default function Dashboard() {
       <div className="grid grid-cols-3 gap-8 ml-4 mt-6 mb-10">
         {summary && (
           <StatCard
-            number={summary.value.instructorsCount}
+            number={summary.instructorsCount}
             label="Instructors"
             icon={<FaRegUser size={24} />}
           />
         )}
         {summary && (
           <StatCard
-            number={summary.value.categoriesCount}
+            number={summary.categoriesCount}
             label="Categories"
             icon={<IoMdListBox size={24} />}
           />
         )}
         {summary && (
           <StatCard
-            number={summary.value.coursesCount}
+            number={summary.coursesCount}
             label="Courses"
             icon={<BsCollection size={24} />}
           />
@@ -53,9 +57,9 @@ export default function Dashboard() {
           {summary && (
             <Statistics
               data={[
-                { name: "Instructors", value: summary.value.instructorsCount },
-                { name: "Categories", value: summary.value.categoriesCount },
-                { name: "Courses", value: summary.value.coursesCount },
+                { name: "Instructors", value: summary.instructorsCount },
+                { name: "Categories", value: summary.categoriesCount },
+                { name: "Courses", value: summary.coursesCount },
               ]}
             />
           )}
@@ -64,9 +68,9 @@ export default function Dashboard() {
           {summary && (
             <Statistics
               data={[
-                { name: "Instructors", value: summary.value.instructorsCount },
-                { name: "Categories", value: summary.value.categoriesCount },
-                { name: "Courses", value: summary.value.coursesCount },
+                { name: "Instructors", value: summary.instructorsCount },
+                { name: "Categories", value: summary.categoriesCount },
+                { name: "Courses", value: summary.coursesCount },
               ]}
             />
           )}
