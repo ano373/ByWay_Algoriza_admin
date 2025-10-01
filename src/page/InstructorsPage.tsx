@@ -1,8 +1,8 @@
 import { InstructorTable } from "../components/Instructor/table/InstructorTable";
 import { ActionColumn } from "../components/UI/ActionColumn";
-import { StarRating } from "../components/Instructor/StarRating";
+import { StarRating } from "../components/UI/StarRating";
 import { useCallback, useMemo, useState } from "react";
-import { TableToolBar } from "../components/Instructor/table/TableToolBar";
+import { InstructorTableToolBar } from "../components/Instructor/table/InstructorTableToolBar";
 import {
   JobTitles,
   type Instructor,
@@ -10,7 +10,7 @@ import {
   type InstructorPaginationQuery,
 } from "../types/Instrcutor";
 
-import Modal from "../components/Instructor/Modal";
+import Modal from "../components/UI/Modal";
 import { DeletePrompt } from "../components/UI/DeletePrompt";
 import InstructorForm from "../components/Instructor/InstructorForm";
 import { useInstructorModals } from "../hooks/useInstructorModals";
@@ -104,8 +104,10 @@ export default function InstructorsPage() {
   if (isError) return <ErrorMessage message="Failed to load Instructors" />;
 
   return (
-    <div className="flex flex-col flex-1 w-full h-full bg-white rounded-4xl shadow-lg">
-      <TableToolBar
+    <div className=" flex flex-col flex-1 w-full h-full bg-[#fcfcfc] rounded-4xl shadow-lg">
+      <div className="text-4xl px-6 pt-6"> Courses </div>
+      <hr className="border-gray-400 my-6" />
+      <InstructorTableToolBar
         onAddClick={actions.openAdd}
         onSearch={(query: string) =>
           setInstructorPaginationQuery((prev) => ({

@@ -7,7 +7,7 @@ interface TableBodyProps {
   }[];
 }
 
-export function TableBody({ rows }: TableBodyProps) {
+export function InstructorTableBody({ rows }: TableBodyProps) {
   return (
     <tbody>
       {rows.map((item, index) => (

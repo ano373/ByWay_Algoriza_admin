@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Mode } from "../../types/general";
-import { StarRating } from "./StarRating";
+import { StarRating } from "../UI/StarRating";
 import {
   type Instructor,
   type InstructorFormData,

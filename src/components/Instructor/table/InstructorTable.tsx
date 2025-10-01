@@ -1,5 +1,5 @@
-import { TableHeader } from "./TableHeader";
-import { TableBody } from "./TableBody";
+import { InstructorTableHeader } from "./InstructorTableHeader";
+import { InstructorTableBody } from "./InstructorTableBody";
 
 interface InstructorsTableProps {
   rows: {
@@ -13,8 +13,8 @@ interface InstructorsTableProps {
 export function InstructorTable({ rows }: InstructorsTableProps) {
   return (
     <table className="min-w-full table-auto border border-gray-200  ">
-      <TableHeader />
-      <TableBody rows={rows} />
+      <InstructorTableHeader />
+      <InstructorTableBody rows={rows} />
     </table>
   );
 }

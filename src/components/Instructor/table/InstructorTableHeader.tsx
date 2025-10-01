@@ -1,4 +1,4 @@
-export function TableHeader() {
+export function InstructorTableHeader() {
   const columns = ["Name", "Job Title", "Rate", "Action"];
   return (
     <thead className="bg-primary ">

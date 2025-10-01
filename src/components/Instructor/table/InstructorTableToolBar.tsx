@@ -6,7 +6,7 @@ interface TableToolBarProps {
   InstructorsCount: number;
 }
 
-export function TableToolBar({
+export function InstructorTableToolBar({
   onAddClick,
   onSearch,
   InstructorsCount,

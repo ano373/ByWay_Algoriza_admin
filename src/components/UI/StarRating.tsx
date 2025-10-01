@@ -14,9 +14,11 @@ export function StarRating({ value, editable, onChange }: StarRatingProps) {
         return (
           <FaStar
             key={starIndex}
-            className={`w-6 h-6 cursor-pointer transition-colors ${
+            className={`w-6 h-6 transition-colors ${
               starIndex <= value ? "text-yellow-400" : "text-gray-300"
-            } ${editable ? "hover:scale-110" : ""}`}
+            } ${
+              editable ? "cursor-pointer hover:scale-110" : "cursor-default"
+            }`}
             onClick={() => {
               if (editable && onChange) {
                 onChange(starIndex);
