@@ -6,13 +6,7 @@ export const http = axios.create({
   timeout: 10000,
 });
 
-const Admin_token = [
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.",
-  "eyJzdWIiOiI1MDA2IiwiZW1haWwiOiJhZG1pbkAuY29tIiwianRpIjoiZ",
-  "DQwMzllZjItYTIxYS00MWY1LWJlMjgtMzUzMjE2YjVkNDBkIiwicm9sZSI6ImFkbWluIiwiZXhwIj",
-  "oxNzU5MzU1NzA5LCJpc3MiOiJBbG9ncml6YSIsImF1ZCI6IldlYkFwaSJ9.",
-  "GksywlOnsk8nDBvWaDr7TqAKp3cuWv4uW-xsr8mkaQs",
-].join("");
+const Admin_token = import.meta.env.VITE_ADMIN_TOKEN;
 
 http.interceptors.request.use(
   (config) => {
