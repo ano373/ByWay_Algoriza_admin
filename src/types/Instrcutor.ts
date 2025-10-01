@@ -11,7 +11,7 @@ export const JobTitles = createEnumConfig([
 
 export type JobTitle = (typeof JobTitles.values)[number];
 
-export interface InstructorFormData {
+export interface InstructorRequest {
   instructorId?: number;
   profileImageUrl?: string;
   name: string;
@@ -20,7 +20,7 @@ export interface InstructorFormData {
   description: string;
 }
 
-export interface InstructorPaginationQuery {
+export interface InstructorPaginationParameter {
   limit?: number;
   page?: number;
   search?: string;
@@ -35,5 +35,4 @@ export interface Instructor {
   jobTitle: JobTitle;
   rating: number;
   description: string;
-  createdAt: string;
 }

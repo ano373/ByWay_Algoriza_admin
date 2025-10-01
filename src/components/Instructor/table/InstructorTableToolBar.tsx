@@ -1,6 +1,6 @@
 import { SearchBar } from "../../UI/SearchBar";
 
-interface TableToolBarProps {
+interface InstructorTableToolBar {
   onAddClick: () => void;
   onSearch: (query: string) => void;
   InstructorsCount: number;
@@ -10,7 +10,7 @@ export function InstructorTableToolBar({
   onAddClick,
   onSearch,
   InstructorsCount,
-}: TableToolBarProps) {
+}: InstructorTableToolBar) {
   return (
     <div className="flex items-center justify-between font-bold text-2xl px-8 py-8">
       <div className="flex items-center">

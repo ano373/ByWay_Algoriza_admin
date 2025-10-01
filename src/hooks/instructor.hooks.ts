@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { InstructorApi } from "../api/InstructorApi";
 import type {
   Instructor,
-  InstructorFormData,
-  InstructorPaginationQuery,
+  InstructorRequest,
+  InstructorPaginationParameter,
 } from "../types/Instrcutor";
 import type { ApiResponse } from "../types/general";
 
@@ -15,7 +15,7 @@ export function useInstructor(id: number) {
   });
 }
 
-export function useInstructors(params?: InstructorPaginationQuery) {
+export function useInstructors(params?: InstructorPaginationParameter) {
   return useQuery({
     queryKey: ["instructors", params],
     queryFn: () => InstructorApi.getAll(params),
@@ -26,10 +26,11 @@ export function useInstructors(params?: InstructorPaginationQuery) {
 export function useAddInstructor() {
   const queryClient = useQueryClient();
 
-  return useMutation<ApiResponse<Instructor>, Error, InstructorFormData>({
+  return useMutation<ApiResponse<Instructor>, Error, InstructorRequest>({
     mutationFn: (payload) => InstructorApi.add(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["instructors"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboardSummary"] });
     },
   });
 }
@@ -37,7 +38,7 @@ export function useAddInstructor() {
 export function useUpdateInstructor() {
   const queryClient = useQueryClient();
 
-  return useMutation<ApiResponse<Instructor>, Error, InstructorFormData>({
+  return useMutation<ApiResponse<Instructor>, Error, InstructorRequest>({
     mutationFn: (payload) => InstructorApi.update(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["instructors"] });
@@ -57,6 +58,7 @@ export function useDeleteInstructor() {
     mutationFn: (id: number) => InstructorApi.deleteById(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["instructors"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboardSummary"] });
     },
   });
 }

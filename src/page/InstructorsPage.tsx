@@ -6,8 +6,8 @@ import { InstructorTableToolBar } from "../components/Instructor/table/Instructo
 import {
   JobTitles,
   type Instructor,
-  type InstructorFormData,
-  type InstructorPaginationQuery,
+  type InstructorRequest,
+  type InstructorPaginationParameter,
 } from "../types/Instrcutor";
 
 import Modal from "../components/UI/Modal";
@@ -32,7 +32,7 @@ export default function InstructorsPage() {
   const addInstructorMutation = useAddInstructor();
 
   const [InstructorPaginationQuery, setInstructorPaginationQuery] =
-    useState<InstructorPaginationQuery>({
+    useState<InstructorPaginationParameter>({
       page: 1,
       limit: 10,
       search: "",
@@ -78,7 +78,7 @@ export default function InstructorsPage() {
     });
   }, [states.deleteInstructor, deleteInstructorMutation, closers]);
 
-  const handleEditInstructor = async (data: InstructorFormData) => {
+  const handleEditInstructor = async (data: InstructorRequest) => {
     updateInstructorMutation.mutate(data, {
       onSuccess: () => {
         closers.closeEdit();
@@ -89,7 +89,7 @@ export default function InstructorsPage() {
     });
   };
 
-  const handleAddInstructor = async (data: InstructorFormData) => {
+  const handleAddInstructor = async (data: InstructorRequest) => {
     addInstructorMutation.mutate(data, {
       onSuccess: () => {
         closers.closeAdd();

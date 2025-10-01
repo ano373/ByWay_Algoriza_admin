@@ -3,7 +3,7 @@ import type { Mode } from "../../types/general";
 import { StarRating } from "../UI/StarRating";
 import {
   type Instructor,
-  type InstructorFormData,
+  type InstructorRequest,
   type JobTitle,
   JobTitles,
 } from "../../types/Instrcutor";
@@ -13,7 +13,7 @@ interface InstructorFormProps {
   initialData?: Instructor;
   mode: Mode;
   onClose: () => void;
-  onSubmit?: (data: InstructorFormData) => void;
+  onSubmit?: (data: InstructorRequest) => void;
 }
 
 export default function InstructorForm({
@@ -26,7 +26,7 @@ export default function InstructorForm({
   //const isEdit = mode === "edit";
   const isAdd = mode === "add";
 
-  const [formData, setFormData] = useState<InstructorFormData>(() => {
+  const [formData, setFormData] = useState<InstructorRequest>(() => {
     if (initialData) {
       // Convert Instructor to InstructorFormData
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -2,17 +2,21 @@ import { http } from "../lib/http";
 import type { ApiResponse } from "../types/general";
 import type {
   Instructor,
-  InstructorFormData,
-  InstructorPaginationQuery,
+  InstructorRequest,
+  InstructorPaginationParameter,
 } from "../types/Instrcutor";
 
-async function fetchInstructorById(id: number): Promise<Instructor> {
-  const response = await http.get<Instructor>(`/instructors/${id}`);
+async function fetchInstructorById(
+  id: number
+): Promise<ApiResponse<Instructor>> {
+  const response = await http.get<ApiResponse<Instructor>>(
+    `/instructors/${id}`
+  );
   return response.data;
 }
 
 async function fetchInstructors(
-  params?: InstructorPaginationQuery
+  params?: InstructorPaginationParameter
 ): Promise<ApiResponse<Instructor[]>> {
   const response = await http.get<ApiResponse<Instructor[]>>(`/instructors`, {
     params: params,
@@ -25,7 +29,7 @@ async function deleteInstructor(id: number): Promise<void> {
 }
 
 export async function addInstructor(
-  payload: InstructorFormData
+  payload: InstructorRequest
 ): Promise<ApiResponse<Instructor>> {
   const response = await http.post(`/instructors`, payload, {
     headers: { "Content-Type": "application/json" },
@@ -34,7 +38,7 @@ export async function addInstructor(
 }
 
 export async function updateInstructor(
-  payload: InstructorFormData
+  payload: InstructorRequest
 ): Promise<ApiResponse<Instructor>> {
   const response = await http.put(
     `instructors/${payload.instructorId}`,
