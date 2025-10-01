@@ -14,7 +14,7 @@ import Modal from "../components/UI/Modal";
 import { DeletePrompt } from "../components/UI/DeletePrompt";
 import InstructorForm from "../components/Instructor/InstructorForm";
 import { useInstructorModals } from "../hooks/useInstructorModals";
-import { DashboardApi } from "../api/DashboardApi";
+
 import {
   useAddInstructor,
   useDeleteInstructor,
@@ -24,9 +24,10 @@ import {
 import { LoadingSpinner } from "../components/UI/LoadingSpinner";
 import { ErrorMessage } from "../components/UI/ErrorMessage";
 import { Pagination } from "../components/UI/Pagination";
+import { useDashboardSummary } from "../hooks/useDashboardSummary";
 
 export default function InstructorsPage() {
-  const { data: summary } = DashboardApi.useSummary();
+  const { data: summary } = useDashboardSummary();
   const deleteInstructorMutation = useDeleteInstructor();
   const updateInstructorMutation = useUpdateInstructor();
   const addInstructorMutation = useAddInstructor();

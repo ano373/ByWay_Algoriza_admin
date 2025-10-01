@@ -7,14 +7,14 @@ import type {
 } from "../types/course";
 import type { ApiResponse } from "../types/general";
 
-export async function fetchCourseById(
+async function fetchCourseById(
   id: number
 ): Promise<ApiResponse<CourseDetails>> {
   const response = await http.get<ApiResponse<CourseDetails>>(`/courses/${id}`);
   return response.data;
 }
 
-export async function fetchCourses(
+async function fetchCourses(
   params?: CoursePaginationParameter
 ): Promise<ApiResponse<CourseSummary[]>> {
   const response = await http.get<ApiResponse<CourseSummary[]>>(`/courses`, {
@@ -23,23 +23,31 @@ export async function fetchCourses(
   return response.data;
 }
 
-export async function deleteCourse(id: number): Promise<void> {
+async function deleteCourse(id: number): Promise<void> {
   await http.delete(`/courses/${id}`);
 }
 
-export async function addCourse(
+async function addCourse(
   payload: CourseRequest
-): Promise<ApiResponse<ApiResponse<CourseSummary>>> {
+): Promise<ApiResponse<CourseSummary>> {
   const response = await http.post(`/courses`, payload, {
     headers: { "Content-Type": "application/json" },
   });
   return response.data;
 }
 
-export async function updateCourse(
+async function updateCourse(
   payload: CourseRequest
 ): Promise<ApiResponse<CourseSummary>> {
   const response = await http.put(`/courses/${payload.courseId}`, payload);
 
   return response.data;
 }
+
+export const CourseApi = {
+  getById: fetchCourseById,
+  getAll: fetchCourses,
+  deleteById: deleteCourse,
+  add: addCourse,
+  update: updateCourse,
+};

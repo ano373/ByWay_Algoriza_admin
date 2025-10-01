@@ -1,5 +1,5 @@
 type SelectMenuProps = {
-  label: string;
+  label?: string;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   children: React.ReactNode;

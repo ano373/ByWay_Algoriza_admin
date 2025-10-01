@@ -6,16 +6,12 @@ import { BsCollection } from "react-icons/bs";
 import StatCard from "../components/Dashboard/StatCard";
 import Statistics from "../components/Dashboard/Statistics";
 import { LoadingSpinner } from "../components/UI/LoadingSpinner";
-import { DashboardApi } from "../api/DashboardApi";
 import { ErrorMessage } from "../components/UI/ErrorMessage";
 
+import { useDashboardSummary } from "../hooks/useDashboardSummary";
+
 export default function Dashboard() {
-  const {
-    data: summary,
-    isLoading,
-    error,
-    refetch,
-  } = DashboardApi.useSummary();
+  const { data: summary, isLoading, error, refetch } = useDashboardSummary();
 
   if (isLoading) return <LoadingSpinner />;
   if (error)
