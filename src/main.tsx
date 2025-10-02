@@ -9,6 +9,7 @@ import InstructorsPage from "./page/InstructorsPage.tsx";
 import { LayoutWithSideBar } from "./components/UI/LayoutWithSideBar.tsx";
 import CoursesPage from "./page/coursesPage.tsx";
 import { Toaster } from "react-hot-toast";
+import { CourseFormPage } from "./page/CourseFormPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,15 @@ const router = createBrowserRouter([
       { path: "/", element: <App /> },
       { path: "/instructors", element: <InstructorsPage /> },
       { path: "/courses", element: <CoursesPage /> },
+      { path: "/courses/add", element: <CourseFormPage mode="add" /> },
+      {
+        path: "/courses/:courseId/view",
+        element: <CourseFormPage mode="view" />,
+      },
+      {
+        path: "/courses/:courseId/edit",
+        element: <CourseFormPage mode="edit" />,
+      },
     ],
   },
   { path: "*", element: <div>404 Not Found</div> },

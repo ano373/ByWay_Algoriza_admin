@@ -42,9 +42,6 @@ export default function InstructorsPage() {
     if (!modal || modal.type !== "delete") return;
 
     deleteInstructorMutation.mutate(modal.id, {
-      onError: (error) => {
-        console.error("Failed to delete instructor:", error);
-      },
       onSettled: () => {
         close();
       },
@@ -53,22 +50,16 @@ export default function InstructorsPage() {
 
   const handleEditInstructor = async (data: InstructorRequest) => {
     updateInstructorMutation.mutate(data, {
-      onSuccess: () => {
+      onSettled: () => {
         close();
-      },
-      onError: (error) => {
-        console.error("Failed to update instructor:", error);
       },
     });
   };
 
   const handleAddInstructor = async (data: InstructorRequest) => {
     addInstructorMutation.mutate(data, {
-      onSuccess: () => {
+      onSettled: () => {
         close();
-      },
-      onError: (error) => {
-        console.error("Failed to add instructor:", error);
       },
     });
   };

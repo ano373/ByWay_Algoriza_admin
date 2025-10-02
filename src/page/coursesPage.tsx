@@ -1,21 +1,68 @@
-import { use, useState } from "react";
-import CourseCard from "../components/Course/CourseCard";
+import { useCallback, useState } from "react";
 import { CourseToolBar } from "../components/Course/CourseToolBar";
 import { useDashboardSummary } from "../hooks/useDashboardSummary";
 import type { CoursePaginationParameter } from "../types/course";
 import { Pagination } from "../components/UI/Pagination";
 import { LoadingSpinner } from "../components/UI/LoadingSpinner";
 import { ErrorMessage } from "../components/UI/ErrorMessage";
-import { useCourses } from "../hooks/course.hooks";
+import { useCourses, useDeleteCourser } from "../hooks/course.hooks";
+import { useNavigate } from "react-router-dom";
+import { CourseCardList } from "../components/Course/CourseCardList";
+import { COURSE_PAGE_SIZE } from "../lib/const";
+import Modal from "../components/UI/Modal";
+import { DeletePrompt } from "../components/UI/DeletePrompt";
 
 export default function CoursesPage() {
   const { data: summary } = useDashboardSummary();
 
   const [CoursePaginationParameter, setCoursePaginationParameter] =
-    useState<CoursePaginationParameter>();
+    useState<CoursePaginationParameter>({ limit: COURSE_PAGE_SIZE });
 
   const { data, isLoading, isError } = useCourses(CoursePaginationParameter);
   const courses = data?.value ?? [];
+
+  const deleteCourseMutation = useDeleteCourser();
+
+  // Delete modal state
+  const [deleteModal, setDeleteModal] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
+
+  const navigate = useNavigate();
+
+  const handleAddClick = () => {
+    navigate("/courses/add");
+  };
+  const handleView = (courseId: number) => {
+    navigate(`/courses/${courseId}/view`);
+  };
+
+  const handleEdit = (courseId: number) => {
+    navigate(`/courses/${courseId}/edit`);
+  };
+
+  const handleDelete = (courseId: number, courseName: string) => {
+    setDeleteModal({ id: courseId, name: courseName });
+  };
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!deleteModal) return;
+
+    deleteCourseMutation.mutate(deleteModal.id, {
+      onSettled: () => {
+        setDeleteModal(null);
+      },
+    });
+  }, [deleteModal, deleteCourseMutation]);
+
+  const handleSearch = (query: string) => {
+    setCoursePaginationParameter((prev) => ({
+      ...prev,
+      search: query,
+      page: 1,
+    }));
+  };
 
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <ErrorMessage message="Failed to load Courses" />;
@@ -26,12 +73,8 @@ export default function CoursesPage() {
       <hr className="border-gray-400 my-6" />
 
       <CourseToolBar
-        onAddClick={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-        onSearch={function (query: string): void {
-          throw new Error("Function not implemented.");
-        }}
+        onAddClick={handleAddClick}
+        onSearch={handleSearch}
         onLevelChange={function (
           event: React.ChangeEvent<HTMLSelectElement>
         ): void {
@@ -43,33 +86,15 @@ export default function CoursesPage() {
       />
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <CourseCard
-          courseId={2017}
-          title="Data Structures & Algorithms in C#"
-          instructorName="emad ayman"
-          categoryName="Frontend"
-          level="Expert"
-          rating={4}
-          totalDurationMinutes={880}
-          totalLessonCount={35}
-          price={159.99}
-          thumbnailUrl="https://picsum.photos/700/430"
-        />
-        <CourseCard
-          courseId={101}
-          title="Beginner's Guide to Design"
-          instructorName="Ronald Richards"
-          categoryName="UI/UX Design"
-          level="Beginner"
-          rating={5}
-          totalDurationMinutes={1320}
-          totalLessonCount={155}
-          price={45.0}
-          thumbnailUrl="https://picsum.photos/700/430"
-        />
-      </div>
-
+      <CourseCardList
+        courses={courses}
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={(courseId) => {
+          const course = courses.find((c) => c.courseId === courseId);
+          if (course) handleDelete(courseId, course.title);
+        }}
+      />
       <div className="border-t border-gray-200 p-4 mt-auto">
         <Pagination
           currentPage={CoursePaginationParameter?.page ?? 1}
@@ -79,6 +104,17 @@ export default function CoursesPage() {
           }
         />
       </div>
+
+      {deleteModal && (
+        <Modal open={true} onClose={() => setDeleteModal(null)}>
+          <DeletePrompt
+            label="Course"
+            name={deleteModal.name}
+            onConfirm={handleConfirmDelete}
+            onCancel={() => setDeleteModal(null)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }
