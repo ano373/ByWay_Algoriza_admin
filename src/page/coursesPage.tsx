@@ -11,23 +11,27 @@ import { CourseCardList } from "../components/Course/CourseCardList";
 import { COURSE_PAGE_SIZE } from "../lib/const";
 import Modal from "../components/UI/Modal";
 import { DeletePrompt } from "../components/UI/DeletePrompt";
+import { useCategories } from "../hooks/useCategories";
 
 export default function CoursesPage() {
   const { data: summary } = useDashboardSummary();
 
-  const [CoursePaginationParameter, setCoursePaginationParameter] =
-    useState<CoursePaginationParameter>({ limit: COURSE_PAGE_SIZE });
+  const [courseParams, setCourseParams] = useState<CoursePaginationParameter>({
+    limit: COURSE_PAGE_SIZE,
+  });
 
-  const { data, isLoading, isError } = useCourses(CoursePaginationParameter);
+  const { data, isLoading, isError } = useCourses(courseParams);
   const courses = data?.value ?? [];
 
   const deleteCourseMutation = useDeleteCourser();
 
-  // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
     id: number;
     name: string;
   } | null>(null);
+
+  const { data: categories } = useCategories();
+  const CategoriesOptions = categories?.value;
 
   const navigate = useNavigate();
 
@@ -57,10 +61,22 @@ export default function CoursesPage() {
   }, [deleteModal, deleteCourseMutation]);
 
   const handleSearch = (query: string) => {
-    setCoursePaginationParameter((prev) => ({
+    setCourseParams((prev) => ({
       ...prev,
       search: query,
       page: 1,
+    }));
+  };
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedId = Number(event.target.value);
+
+    setCourseParams((prev) => ({
+      ...prev,
+      page: 1,
+      categoryIds: selectedId,
     }));
   };
 
@@ -75,14 +91,10 @@ export default function CoursesPage() {
       <CourseToolBar
         onAddClick={handleAddClick}
         onSearch={handleSearch}
-        onLevelChange={function (
-          event: React.ChangeEvent<HTMLSelectElement>
-        ): void {
-          throw new Error("Function not implemented.");
-        }}
+        onCateogryChange={handleCategoryChange}
         CoursesCount={summary?.coursesCount || 0}
-        levelOptions={[]}
-        selectedLevel={""}
+        cateogryOptions={CategoriesOptions || []}
+        currentSelectedCateogryId={courseParams.categoryIds ?? ""}
       />
 
       {/* Courses Grid */}
@@ -97,10 +109,10 @@ export default function CoursesPage() {
       />
       <div className="border-t border-gray-200 p-4 mt-auto">
         <Pagination
-          currentPage={CoursePaginationParameter?.page ?? 1}
+          currentPage={courseParams?.page ?? 1}
           totalPages={3}
           onPageChange={(page) =>
-            setCoursePaginationParameter((prev) => ({ ...prev, page }))
+            setCourseParams((prev) => ({ ...prev, page }))
           }
         />
       </div>

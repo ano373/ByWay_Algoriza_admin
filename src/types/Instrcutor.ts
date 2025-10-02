@@ -15,7 +15,7 @@ export interface InstructorRequest {
   instructorId?: number;
   profileImageUrl?: string;
   name: string;
-  jobTitle: JobTitle;
+  jobTitle: JobTitle | "";
   rating: number;
   description: string;
 }

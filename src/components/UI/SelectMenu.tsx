@@ -1,13 +1,13 @@
 type SelectMenuProps = {
   label?: string;
-  value: string;
+  currentSelection: string | number;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   children: React.ReactNode;
 };
 
 export default function SelectMenu({
   label,
-  value,
+  currentSelection: value,
   onChange,
   children,
 }: SelectMenuProps) {

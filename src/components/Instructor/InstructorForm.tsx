@@ -28,14 +28,13 @@ export default function InstructorForm({
 
   const [formData, setFormData] = useState<InstructorRequest>(() => {
     if (initialData) {
-      // Convert Instructor to InstructorFormData
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { createdAt, ...formFields } = initialData;
+      // Convert Instructor to InstructorRequest
+      const { ...formFields } = initialData;
       return formFields;
     }
     return {
       name: "",
-      jobTitle: JobTitles.values[0],
+      jobTitle: "",
       rating: 0,
       description: "",
     };
@@ -88,7 +87,7 @@ export default function InstructorForm({
         <div className="flex-1">
           <SelectMenu
             label="Job Title"
-            value={formData.jobTitle}
+            currentSelection={formData.jobTitle}
             onChange={handleJobTitleChange}
           >
             {JobTitles.configs.map((job) => (
