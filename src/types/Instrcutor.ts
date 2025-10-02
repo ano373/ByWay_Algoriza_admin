@@ -6,7 +6,7 @@ export const JobTitles = createEnumConfig([
   { label: "Fullstack Developer", value: "FullstackDeveloper" },
   { label: "Frontend Developer", value: "FrontendDeveloper" },
   { label: "Backend Developer", value: "BackendDeveloper" },
-  { label: "UI/UXDesigner", value: "UIUXDesigner" },
+  { label: "UI/UX Designer", value: "UIUXDesigner" },
 ] as const);
 
 export type JobTitle = (typeof JobTitles.values)[number];

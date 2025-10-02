@@ -1,11 +1,7 @@
 import { InstructorTable } from "../components/Instructor/table/InstructorTable";
-import { ActionColumn } from "../components/UI/ActionColumn";
-import { StarRating } from "../components/UI/StarRating";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { InstructorTableToolBar } from "../components/Instructor/table/InstructorTableToolBar";
 import {
-  JobTitles,
-  type Instructor,
   type InstructorRequest,
   type InstructorPaginationParameter,
 } from "../types/Instrcutor";
@@ -39,46 +35,26 @@ export default function InstructorsPage() {
   );
   const instructors = data?.value ?? [];
 
-  const { states, actions, closers } = useInstructorModals();
+  const { modal, actions, close } = useInstructorModals();
   //  const meta = data?.meta;
 
-  const tableRows = useMemo(() => {
-    return instructors.map((instructor: Instructor) => ({
-      name: instructor.name,
-      jobTitle: JobTitles.toLabel(instructor.jobTitle),
-      Rate: <StarRating value={instructor.rating} editable={false} />,
-      Action: (
-        <ActionColumn
-          onView={() => actions.openView(instructor)}
-          onEdit={() => actions.openEdit(instructor)}
-          onDelete={() =>
-            actions.openDelete(instructor.instructorId, instructor.name)
-          }
-        />
-      ),
-    }));
-  }, [instructors]);
-
   const handleConfirmDelete = useCallback(async () => {
-    if (!states.deleteInstructor) return;
+    if (!modal || modal.type !== "delete") return;
 
-    deleteInstructorMutation.mutate(states.deleteInstructor.id, {
-      onSuccess: () => {
-        closers.closeDelete();
-      },
+    deleteInstructorMutation.mutate(modal.id, {
       onError: (error) => {
         console.error("Failed to delete instructor:", error);
       },
       onSettled: () => {
-        closers.closeDelete();
+        close();
       },
     });
-  }, [states.deleteInstructor, deleteInstructorMutation, closers]);
+  }, [modal, deleteInstructorMutation, close]);
 
   const handleEditInstructor = async (data: InstructorRequest) => {
     updateInstructorMutation.mutate(data, {
       onSuccess: () => {
-        closers.closeEdit();
+        close();
       },
       onError: (error) => {
         console.error("Failed to update instructor:", error);
@@ -89,7 +65,7 @@ export default function InstructorsPage() {
   const handleAddInstructor = async (data: InstructorRequest) => {
     addInstructorMutation.mutate(data, {
       onSuccess: () => {
-        closers.closeAdd();
+        close();
       },
       onError: (error) => {
         console.error("Failed to add instructor:", error);
@@ -115,7 +91,7 @@ export default function InstructorsPage() {
         }
         InstructorsCount={summary?.instructorsCount ?? 0}
       />
-      <InstructorTable rows={tableRows} />
+      <InstructorTable instructors={instructors} actions={actions} />
       <div className="border-t border-gray-200 p-4 mt-auto">
         <Pagination
           currentPage={InstructorPaginationQuery?.page ?? 1}
@@ -127,42 +103,38 @@ export default function InstructorsPage() {
       </div>
 
       {/* Modal Logic */}
-      {states.deleteInstructor && (
-        <Modal open={true} onClose={closers.closeDelete}>
-          <DeletePrompt
-            label="Instructor"
-            name={states.deleteInstructor.name}
-            onConfirm={handleConfirmDelete}
-            onCancel={closers.closeDelete}
-          />
-        </Modal>
-      )}
-      {states.viewInstructor && (
-        <Modal open={true} onClose={closers.closeView}>
-          <InstructorForm
-            initialData={states.viewInstructor.Instructor}
-            mode="view"
-            onClose={closers.closeView}
-          />
-        </Modal>
-      )}
-      {states.editInstructor && (
-        <Modal open={true} onClose={closers.closeEdit}>
-          <InstructorForm
-            initialData={states.editInstructor.Instructor}
-            mode="edit"
-            onClose={closers.closeEdit}
-            onSubmit={handleEditInstructor}
-          />
-        </Modal>
-      )}
-      {states.addInstructor && (
-        <Modal open={true} onClose={closers.closeAdd}>
-          <InstructorForm
-            onSubmit={handleAddInstructor}
-            mode="add"
-            onClose={closers.closeAdd}
-          />
+      {modal && (
+        <Modal open={true} onClose={close}>
+          {modal.type === "delete" && (
+            <DeletePrompt
+              label="Instructor"
+              name={modal.name}
+              onConfirm={handleConfirmDelete}
+              onCancel={close}
+            />
+          )}
+          {modal.type === "view" && (
+            <InstructorForm
+              initialData={modal.instructor}
+              mode="view"
+              onClose={close}
+            />
+          )}
+          {modal.type === "edit" && (
+            <InstructorForm
+              initialData={modal.instructor}
+              mode="edit"
+              onClose={close}
+              onSubmit={handleEditInstructor}
+            />
+          )}
+          {modal.type === "add" && (
+            <InstructorForm
+              onSubmit={handleAddInstructor}
+              mode="add"
+              onClose={close}
+            />
+          )}
         </Modal>
       )}
     </div>

@@ -1,35 +1,32 @@
 import { useState } from "react";
 import type { Instructor } from "../types/Instrcutor";
 
+type ModalType =
+  | { type: "view"; instructor: Instructor }
+  | { type: "edit"; instructor: Instructor }
+  | { type: "delete"; id: number; name: string }
+  | { type: "add" }
+  | null;
+
 export const useInstructorModals = () => {
-  const [editInstructor, setEditInstructor] = useState<{
-    Instructor: Instructor;
-  } | null>(null);
-  const [viewInstructor, setViewInstructor] = useState<{
-    Instructor: Instructor;
-  } | null>(null);
-  const [deleteInstructor, setDeleteInstructor] = useState<{
-    id: number;
-    name: string;
-  } | null>(null);
-  const [addInstructor, setAddInstructor] = useState<boolean>(false);
+  const [modal, setModal] = useState<ModalType>(null);
+
+  const openView = (instructor: Instructor) =>
+    setModal({ type: "view", instructor });
 
   const openEdit = (instructor: Instructor) =>
-    setEditInstructor({ Instructor: instructor });
-  const openView = (instructor: Instructor) =>
-    setViewInstructor({ Instructor: instructor });
-  const openDelete = (id: number, name: string) =>
-    setDeleteInstructor({ id, name });
-  const openAdd = () => setAddInstructor(true);
+    setModal({ type: "edit", instructor });
 
-  const closeEdit = () => setEditInstructor(null);
-  const closeView = () => setViewInstructor(null);
-  const closeDelete = () => setDeleteInstructor(null);
-  const closeAdd = () => setAddInstructor(false);
+  const openDelete = (id: number, name: string) =>
+    setModal({ type: "delete", id, name });
+
+  const openAdd = () => setModal({ type: "add" });
+
+  const close = () => setModal(null);
 
   return {
-    states: { editInstructor, viewInstructor, deleteInstructor, addInstructor },
-    actions: { openEdit, openView, openDelete, openAdd },
-    closers: { closeEdit, closeView, closeDelete, closeAdd },
+    modal,
+    actions: { openView, openEdit, openDelete, openAdd },
+    close,
   };
 };
