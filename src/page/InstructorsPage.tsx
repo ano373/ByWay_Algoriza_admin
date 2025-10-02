@@ -33,17 +33,13 @@ export default function InstructorsPage() {
   const addInstructorMutation = useAddInstructor();
 
   const [InstructorPaginationQuery, setInstructorPaginationQuery] =
-    useState<InstructorPaginationParameter>({
-      page: 1,
-      limit: 10,
-      search: "",
-    });
+    useState<InstructorPaginationParameter>();
   const { data, isLoading, isError } = useInstructors(
     InstructorPaginationQuery
   );
+  const instructors = data?.value ?? [];
 
   const { states, actions, closers } = useInstructorModals();
-  const instructors = data?.value ?? [];
   //  const meta = data?.meta;
 
   const tableRows = useMemo(() => {
@@ -122,7 +118,7 @@ export default function InstructorsPage() {
       <InstructorTable rows={tableRows} />
       <div className="border-t border-gray-200 p-4 mt-auto">
         <Pagination
-          currentPage={InstructorPaginationQuery.page ?? 1}
+          currentPage={InstructorPaginationQuery?.page ?? 1}
           totalPages={3}
           onPageChange={(page) =>
             setInstructorPaginationQuery((prev) => ({ ...prev, page }))

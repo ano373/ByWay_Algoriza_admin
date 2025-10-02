@@ -30,12 +30,6 @@ export function SearchBar({
         className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
         size={20}
       />
-      <button
-        type="submit"
-        className="ml-2 px-4 py-2 bg-blue-400 text-white rounded-xl hover:bg-blue-600 transition-colors"
-      >
-        Search
-      </button>
     </form>
   );
 }
