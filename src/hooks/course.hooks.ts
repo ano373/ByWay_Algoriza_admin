@@ -8,14 +8,6 @@ import type {
 } from "../types/course";
 import type { ApiResponse } from "../types/general";
 
-export function useCourse(id: number) {
-  return useQuery({
-    queryKey: ["course", id],
-    queryFn: () => CourseApi.getById(id),
-    enabled: !!id,
-  });
-}
-
 export function useCourses(params?: CoursePaginationParameter) {
   return useQuery({
     queryKey: ["courses", params],
@@ -24,6 +16,13 @@ export function useCourses(params?: CoursePaginationParameter) {
   });
 }
 
+export function useCourse(id: number) {
+  return useQuery({
+    queryKey: ["course", id],
+    queryFn: () => CourseApi.getById(id),
+    enabled: !!id,
+  });
+}
 export function useAddCourse() {
   const queryClient = useQueryClient();
 

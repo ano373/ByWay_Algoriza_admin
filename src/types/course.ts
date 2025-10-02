@@ -6,11 +6,9 @@ export interface CourseRequest {
   courseId?: number;
   thumbnailUrl?: string;
   title: string;
-  level: Level;
+  level: Level | "";
   rating: number;
   price: number;
-  totalLessonCount: number;
-  totalDurationMinutes: number;
   description: string;
   certification: string;
   instructorId: number;
@@ -47,7 +45,7 @@ export type CourseDetails = {
   sections: Section[];
 };
 
-type Section = {
+export type Section = {
   courseSectionId: number;
   title: string;
   lessonCount: number;

@@ -8,6 +8,7 @@ import {
   JobTitles,
 } from "../../types/Instrcutor";
 import SelectMenu from "../UI/SelectMenu";
+import { FormField } from "../UI/FormField";
 
 interface InstructorFormProps {
   initialData?: Instructor;
@@ -71,8 +72,7 @@ export default function InstructorForm({
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <h2 className="text-lg font-bold capitalize">{mode} Instructor</h2>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Name</label>
+      <FormField label="Name">
         <input
           name="name"
           value={formData.name}
@@ -81,36 +81,38 @@ export default function InstructorForm({
           type="text"
           className="w-full border border-gray-300 rounded-lg px-3 py-2"
         />
-      </div>
+      </FormField>
 
       <div className="flex gap-4">
         <div className="flex-1">
-          <SelectMenu
-            label="Job Title"
-            currentSelection={formData.jobTitle}
-            onChange={handleJobTitleChange}
-          >
-            {JobTitles.configs.map((job) => (
-              <option key={job.value} value={job.value}>
-                {job.label}
-              </option>
-            ))}
-          </SelectMenu>
+          <FormField label="Job Title">
+            <SelectMenu
+              currentSelection={formData.jobTitle}
+              onChange={handleJobTitleChange}
+            >
+              {JobTitles.configs.map((job) => (
+                <option key={job.value} value={job.value}>
+                  {job.label}
+                </option>
+              ))}
+            </SelectMenu>
+          </FormField>
         </div>
-        <div className="flex-1 ">
-          <label className="block text-sm font-medium mb-1">Rate</label>
-          <div className="flex justify-start">
-            <StarRating
-              value={formData.rating}
-              editable={!isView}
-              onChange={handleRatingChange}
-            />
-          </div>
+
+        <div className="flex-1">
+          <FormField label="Rate">
+            <div className="flex justify-start">
+              <StarRating
+                value={formData.rating}
+                editable={!isView}
+                onChange={handleRatingChange}
+              />
+            </div>
+          </FormField>
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Description</label>
+      <FormField label="Description">
         <textarea
           name="description"
           disabled={isView}
@@ -118,8 +120,8 @@ export default function InstructorForm({
           onChange={handleDescriptionChange}
           rows={4}
           className="w-full border border-gray-300 rounded-lg px-3 py-2"
-        ></textarea>
-      </div>
+        />
+      </FormField>
 
       {!isView && (
         <div className="flex gap-3">

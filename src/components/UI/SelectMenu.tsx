@@ -3,6 +3,7 @@ type SelectMenuProps = {
   currentSelection: string | number;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   children: React.ReactNode;
+  disabled?: boolean;
 };
 
 export default function SelectMenu({
@@ -10,9 +11,10 @@ export default function SelectMenu({
   currentSelection: value,
   onChange,
   children,
+  disabled,
 }: SelectMenuProps) {
   return (
-    <div className="w-64">
+    <div className="w-full">
       <label className="block mb-2 text-sm font-medium text-gray-700">
         {label}
       </label>
@@ -20,7 +22,9 @@ export default function SelectMenu({
       <select
         value={value}
         onChange={onChange}
-        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+        disabled={disabled}
+        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-3 
+        text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
       >
         <option value="" disabled>
           Choose one

@@ -1,6 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
+import { CourseDetailsForm } from "../components/Course/CourseDetailsForm";
+import type { CourseRequest } from "../types/course";
+import { useCourseFormValidation } from "../hooks/useCourseFormValidation";
+import { useCategories } from "../hooks/useCategories";
+import { useInstructors } from "../hooks/instructor.hooks";
+import { useCourse } from "../hooks/course.hooks";
 
 interface CourseFormPageProps {
   mode: "view" | "edit" | "add";
@@ -8,24 +14,62 @@ interface CourseFormPageProps {
 
 export function CourseFormPage({ mode }: CourseFormPageProps) {
   const { courseId } = useParams<{ courseId: string }>();
+
+  const {
+    data: CourseDetails,
+    isLoading,
+    isError,
+    error,
+  } = useCourse(parseInt(courseId!, 10));
+
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
+  const [formData, SetFormData] = useState<CourseRequest>({
+    title: "",
+    level: "",
+    rating: 0,
+    price: 0,
+    description: "",
+    certification: "",
+    instructorId: 0,
+    categoryId: 0,
+    thumbnailUrl: "",
+    sections: [],
   });
 
+  const { errors, validateInput } = useCourseFormValidation(formData);
+
+  const { data: categories } = useCategories();
+  const CategoriesOptions = categories?.value;
+
+  const { data: instructors } = useInstructors();
+  const instructorOptions = instructors?.value;
+
   const handleNext = () => {
-    // validation before moving to step 2
-    setStep(2);
+    if (validateInput(step, formData)) {
+      setStep(step + 1);
+    }
   };
+
+  const handleChange = (field: keyof CourseRequest, value: unknown) => {
+    SetFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleBack = () => {
     setStep(1);
   };
 
   const handleSubmit = () => {
-    console.log("Form submitted:", form);
+    console.log("Form submitted:", formData);
   };
   //  Course Form Page - {mode} {courseId}
+
+  if (isLoading) {
+    return <div>Loading course...</div>;
+  }
+
+  if (isError) {
+    return <div>Course not found or error loading course</div>;
+  }
   return (
     <div className="flex-1 p-8 bg-gray-50  w-full h-full">
       <div className="text-4xl"> Courses </div>
@@ -41,27 +85,35 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
               <FiArrowLeft size={24} />
             </button>
           )}
-          Add course
+          {mode} course
           <span className="text-lg text-gray-500 ml-4">Step {step} of 2</span>
         </div>
 
         {step === 1 && (
-          <div>
+          <>
             <h1 className="font-primary  text-gray-700 text-2xl mt-4  mb-2">
               Course Details
             </h1>
+            <CourseDetailsForm
+              formData={formData}
+              onChange={handleChange}
+              categoryOptions={CategoriesOptions || []}
+              instructorOptions={instructorOptions || []}
+              errors={errors}
+              mode={mode}
+            />
             <button
               onClick={handleNext}
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Next
             </button>
-          </div>
+          </>
         )}
         {step === 2 && (
           <div>
             <h1 className="font-primary  text-gray-700 text-2xl mt-4  mb-2">
-              Add Content
+              {mode} Content
             </h1>
             <h2 className="font-bold mb-2">Step 2: Course Content</h2>
             <button
