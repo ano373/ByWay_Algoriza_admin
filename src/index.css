@@ -1,5 +1,6 @@
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap");
 
+@import "tailwindcss";
 @layer base {
   :root {
     --color-primary: #eef2ff;
@@ -13,4 +14,8 @@
   .text-primary {
     color: var(--color-primary);
   }
+}
+
+.font-primary {
+  font-family: "IBM Plex Sans Arabic", sans-serif;
 }

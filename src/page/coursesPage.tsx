@@ -88,33 +88,35 @@ export default function CoursesPage() {
       <div className="text-4xl"> Courses </div>
       <hr className="border-gray-400 my-6" />
 
-      <CourseToolBar
-        onAddClick={handleAddClick}
-        onSearch={handleSearch}
-        onCateogryChange={handleCategoryChange}
-        CoursesCount={summary?.coursesCount || 0}
-        cateogryOptions={CategoriesOptions || []}
-        currentSelectedCateogryId={courseParams.categoryIds ?? ""}
-      />
-
-      {/* Courses Grid */}
-      <CourseCardList
-        courses={courses}
-        onView={handleView}
-        onEdit={handleEdit}
-        onDelete={(courseId) => {
-          const course = courses.find((c) => c.courseId === courseId);
-          if (course) handleDelete(courseId, course.title);
-        }}
-      />
-      <div className="border-t border-gray-200 p-4 mt-auto">
-        <Pagination
-          currentPage={courseParams?.page ?? 1}
-          totalPages={3}
-          onPageChange={(page) =>
-            setCourseParams((prev) => ({ ...prev, page }))
-          }
+      <div className="bg-white rounded-3xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6">
+        <CourseToolBar
+          onAddClick={handleAddClick}
+          onSearch={handleSearch}
+          onCateogryChange={handleCategoryChange}
+          CoursesCount={summary?.coursesCount || 0}
+          cateogryOptions={CategoriesOptions || []}
+          currentSelectedCateogryId={courseParams.categoryIds ?? ""}
         />
+
+        <CourseCardList
+          courses={courses}
+          onView={handleView}
+          onEdit={handleEdit}
+          onDelete={(courseId) => {
+            const course = courses.find((c) => c.courseId === courseId);
+            if (course) handleDelete(courseId, course.title);
+          }}
+        />
+
+        <div className="border-t border-gray-200 p-4 mt-auto">
+          <Pagination
+            currentPage={courseParams?.page ?? 1}
+            totalPages={3}
+            onPageChange={(page) =>
+              setCourseParams((prev) => ({ ...prev, page }))
+            }
+          />
+        </div>
       </div>
 
       {deleteModal && (
