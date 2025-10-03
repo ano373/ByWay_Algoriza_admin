@@ -16,13 +16,14 @@ export function useCourses(params?: CoursePaginationParameter) {
   });
 }
 
-export function useCourse(id: number) {
+export function useCourse(id: number, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ["course", id],
     queryFn: () => CourseApi.getById(id),
-    enabled: !!id,
+    enabled: options?.enabled !== undefined ? options.enabled : !!id,
   });
 }
+
 export function useAddCourse() {
   const queryClient = useQueryClient();
 

@@ -35,15 +35,38 @@ export function CourseDetailsForm({
     <div className="space-y-6">
       {/* Thumbnail URL */}
       <FormField label="Thumbnail URL" error={errors.thumbnailUrl}>
-        <input
-          placeholder="Write here..."
-          type="text"
-          name="thumbnailUrl"
-          value={formData.thumbnailUrl}
-          onChange={(e) => onChange("thumbnailUrl", e.target.value)}
-          className={inputClass}
-          disabled={isViewMode}
-        />
+        <div className="flex gap-4 items-start">
+          {/* Image Preview - Left Side */}
+          <div className="w-80 h-52 border border-gray-300 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+            {formData.thumbnailUrl ? (
+              <img
+                src={formData.thumbnailUrl}
+                alt={formData.title || "Thumbnail preview"}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-400">
+                No image
+              </div>
+            )}
+          </div>
+
+          {/* URL Input - Right Side */}
+          <div className="flex-1">
+            <input
+              placeholder="Enter image URL..."
+              type="text"
+              name="thumbnailUrl"
+              value={formData.thumbnailUrl}
+              onChange={(e) => onChange("thumbnailUrl", e.target.value)}
+              className={inputClass}
+              disabled={isViewMode}
+            />
+          </div>
+        </div>
       </FormField>
 
       {/* Title */}
