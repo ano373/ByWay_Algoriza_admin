@@ -38,7 +38,7 @@ export const DeletePrompt = ({
         <button
           type="button"
           onClick={onConfirm}
-          className="flex-1 px-6 py-4 rounded-lg bg-red-500 text-white text-lg hover:bg-gray-800 transition-colors"
+          className="primary-red-button flex-1"
         >
           Confirm Delete
         </button>

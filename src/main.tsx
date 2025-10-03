@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  { path: "*", element: <div>404 Not Found</div> },
+  { path: "/404", element: <div>404 Not Found page</div> },
 ]);
 
 const queryClient = new QueryClient();

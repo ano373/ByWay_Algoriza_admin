@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CourseApi } from "../api/CourseApi";
 import type {
-  CourseDetails,
   CoursePaginationParameter,
   CourseRequest,
   CourseSummary,
@@ -42,7 +41,7 @@ export function useUpdateCourse() {
   return useMutation<ApiResponse<CourseSummary>, Error, CourseRequest>({
     mutationFn: (payload) => CourseApi.update(payload),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["instructors"] });
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
       if (data?.value?.courseId) {
         queryClient.invalidateQueries({
           queryKey: ["course", data.value.courseId],

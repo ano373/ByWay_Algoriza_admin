@@ -1,10 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { CourseDetailsForm } from "../components/Course/CourseDetailsForm";
 import { useCategories } from "../hooks/useCategories";
 import { useInstructors } from "../hooks/instructor.hooks";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import { useCourseSubmit } from "../hooks/useCourseSubmit";
+import { CourseContentForm } from "../components/Course/CourseContentForm";
+import { useEffect } from "react";
 
 interface CourseFormPageProps {
   mode: "view" | "edit" | "add";
@@ -12,8 +14,16 @@ interface CourseFormPageProps {
 
 export function CourseFormPage({ mode }: CourseFormPageProps) {
   const { courseId: id } = useParams<{ courseId: string }>();
-  const courseId = id ? parseInt(id, 10) : undefined;
+  const courseId = id ? Number(id) : NaN;
   const isAddMode = mode === "add";
+  const isViewMode = mode === "view";
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAddMode && isNaN(courseId)) {
+      navigate("/404", { replace: true });
+    }
+  }, [courseId, navigate]);
 
   const {
     step,
@@ -23,8 +33,11 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
     handleBack,
     isLoading,
     isError,
-    errors,
-    validateInput,
+    courseErrors,
+    sectionErrors,
+    validateCourseDetails,
+    validateCourseSections,
+    getPayload,
   } = useMultiStepForm(mode, courseId);
 
   const { handleSubmit, isSubmitting } = useCourseSubmit(mode, courseId);
@@ -36,8 +49,17 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
   const instructorOptions = instructors?.value || [];
 
   const onSubmit = async () => {
-    if (!validateInput(step, formData)) return;
-    await handleSubmit(formData);
+    if (
+      !validateCourseDetails(formData) ||
+      !validateCourseSections(formData.sections)
+    )
+      return;
+    const payload = getPayload();
+    await handleSubmit(payload);
+  };
+
+  const handleCancel = () => {
+    navigate(-1);
   };
 
   if (!isAddMode && isLoading) {
@@ -78,15 +100,24 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
               onChange={handleChange}
               categoryOptions={categoryOptions}
               instructorOptions={instructorOptions}
-              errors={errors}
+              errors={courseErrors}
               mode={mode}
             />
-            <button
-              onClick={handleNext}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Next
-            </button>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="primary-red-button"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleNext}
+                className="primary-black-button flex-1"
+              >
+                Next
+              </button>
+            </div>
           </>
         )}
 
@@ -95,20 +126,30 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
             <h1 className="font-primary text-gray-700 text-2xl mt-4 mb-2">
               {mode} Content
             </h1>
-            <h2 className="font-bold mb-2">Step 2: Course Content</h2>
-            <button
-              onClick={onSubmit}
-              disabled={isSubmitting}
-              className="bg-green-500 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
-            <button
-              onClick={handleBack}
-              className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
-            >
-              Back
-            </button>
+            <CourseContentForm
+              sections={formData.sections}
+              onChange={(newSections) => handleChange("sections", newSections)}
+              errors={sectionErrors}
+              mode={mode}
+            />
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="primary-red-button "
+              >
+                Cancel
+              </button>
+              {!isViewMode && (
+                <button
+                  onClick={onSubmit}
+                  disabled={isSubmitting}
+                  className="primary-black-button flex-1 text-2xl"
+                >
+                  {isSubmitting ? "Submitting..." : "Add"}
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

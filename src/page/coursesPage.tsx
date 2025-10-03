@@ -38,7 +38,9 @@ export default function CoursesPage() {
   const handleAddClick = () => {
     navigate("/courses/add");
   };
+
   const handleView = (courseId: number) => {
+    console.log("view : ", courseId);
     navigate(`/courses/${courseId}/view`);
   };
 

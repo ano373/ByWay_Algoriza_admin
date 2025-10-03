@@ -19,7 +19,17 @@ export const useMultiStepForm = (
     instructorId: 0,
     categoryId: 0,
     thumbnailUrl: "",
-    sections: [],
+    sections:
+      mode === "add"
+        ? [
+            {
+              localId: Date.now(),
+              title: "",
+              lessonCount: 0,
+              durationMinutes: 0,
+            },
+          ]
+        : [],
   });
 
   const {
@@ -42,11 +52,16 @@ export const useMultiStepForm = (
     }
   }, [course, mode]);
 
-  const { errors, validateInput } = useCourseFormValidation(formData);
+  const {
+    sectionErrors,
+    courseErrors,
+    validateCourseDetails,
+    validateCourseSections,
+  } = useCourseFormValidation();
 
   const handleNext = () => {
-    if (validateInput(step, formData)) {
-      setStep(step + 1);
+    if (step === 1 && validateCourseDetails(formData)) {
+      setStep(2);
     }
   };
 
@@ -58,6 +73,17 @@ export const useMultiStepForm = (
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const getPayload = () => ({
+    ...formData,
+    sections: formData.sections.map((section, index) => {
+      const { localId, ...sectionWithoutLocalId } = section;
+      return {
+        ...sectionWithoutLocalId,
+        order: index + 1,
+      };
+    }),
+  });
+
   return {
     step,
     formData,
@@ -66,7 +92,10 @@ export const useMultiStepForm = (
     handleBack,
     isLoading,
     isError,
-    errors,
-    validateInput,
+    courseErrors,
+    sectionErrors,
+    validateCourseDetails,
+    validateCourseSections,
+    getPayload,
   };
 };

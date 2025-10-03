@@ -13,7 +13,7 @@ export interface CourseRequest {
   certification: string;
   instructorId: number;
   categoryId: number;
-  sections: Section[];
+  sections: CourseSection[];
 }
 
 export type CourseSummary = {
@@ -42,16 +42,18 @@ export type CourseDetails = {
   certification: string;
   instructor: Instructor;
   category: category;
-  sections: Section[];
+  sections: CourseSection[];
 };
 
-export type Section = {
-  courseSectionId: number;
+export type CourseSection = {
+  localId?: number; // For frontend key indexing only [not sent to backend]
+  courseSectionId?: number;
   title: string;
   lessonCount: number;
   durationMinutes: number;
-  order: number;
+  order?: number;
 };
+
 export type CoursePaginationParameter = {
   page?: number;
   limit?: number;
