@@ -132,10 +132,7 @@ export default function InstructorForm({
           >
             Cancel
           </button>
-          <button
-            type="submit"
-            className="px-8 py-4 rounded-lg bg-black text-white w-full"
-          >
+          <button type="submit" className="primary-black-button w-full">
             {isAdd ? "Add" : "Update"}
           </button>
         </div>

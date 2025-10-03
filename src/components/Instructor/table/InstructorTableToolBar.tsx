@@ -23,7 +23,7 @@ export function InstructorTableToolBar({
       <div className="flex gap-4">
         {/* add instructor modal */}
         <button
-          className="text-white text-base font-normal px-4 py-2 bg-black rounded-2xl hover:bg-gray-800 transition-colors"
+          className=" font-primary font-normal px-4 py-2 primary-black-button"
           onClick={onAddClick}
         >
           Add Instructor
