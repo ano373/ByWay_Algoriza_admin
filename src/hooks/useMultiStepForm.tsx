@@ -1,8 +1,8 @@
 // hooks/useMultiStepForm.ts
 import { useEffect, useState } from "react";
-import type { CourseRequest } from "../types/course";
-import { useCourseFormValidation } from "./useCourseFormValidation";
+import type { CourseRequest, CourseSection } from "../types/course";
 import { useCourse } from "./course.hooks";
+import { validateCourse } from "../validators/courseValidator";
 
 export const useMultiStepForm = (
   mode: "view" | "edit" | "add",
@@ -32,6 +32,11 @@ export const useMultiStepForm = (
         : [],
   });
 
+  const [courseErrors, setCourseErrors] = useState({});
+  const [sectionErrors, setSectionErrors] = useState<
+    Partial<Record<keyof CourseSection, string>>[]
+  >([]);
+
   const {
     data: course,
     isLoading,
@@ -52,17 +57,24 @@ export const useMultiStepForm = (
     }
   }, [course, mode]);
 
-  const {
-    sectionErrors,
-    courseErrors,
-    validateCourseDetails,
-    validateCourseSections,
-  } = useCourseFormValidation();
-
   const handleNext = () => {
-    if (step === 1 && validateCourseDetails(formData)) {
+    const { courseErrors: newCourseErrors, isValid } = validateCourse({
+      ...formData,
+      sections: [],
+    });
+
+    setCourseErrors(newCourseErrors);
+
+    if (isValid && step === 1) {
       setStep(2);
     }
+  };
+
+  const validateForm = (): boolean => {
+    const { courseErrors, sectionErrors, isValid } = validateCourse(formData);
+    setCourseErrors(courseErrors);
+    setSectionErrors(sectionErrors);
+    return isValid;
   };
 
   const handleBack = () => {
@@ -76,6 +88,7 @@ export const useMultiStepForm = (
   const getPayload = () => ({
     ...formData,
     sections: formData.sections.map((section, index) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { localId, ...sectionWithoutLocalId } = section;
       return {
         ...sectionWithoutLocalId,
@@ -94,8 +107,7 @@ export const useMultiStepForm = (
     isError,
     courseErrors,
     sectionErrors,
-    validateCourseDetails,
-    validateCourseSections,
+    validateForm,
     getPayload,
   };
 };

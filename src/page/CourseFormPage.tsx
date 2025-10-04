@@ -35,8 +35,7 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
     isError,
     courseErrors,
     sectionErrors,
-    validateCourseDetails,
-    validateCourseSections,
+    validateForm,
     getPayload,
   } = useMultiStepForm(mode, courseId);
 
@@ -49,11 +48,7 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
   const instructorOptions = instructors?.value || [];
 
   const onSubmit = async () => {
-    if (
-      !validateCourseDetails(formData) ||
-      !validateCourseSections(formData.sections)
-    )
-      return;
+    if (!validateForm()) return;
     const payload = getPayload();
     await handleSubmit(payload);
   };
