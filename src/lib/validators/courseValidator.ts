@@ -1,4 +1,4 @@
-import type { CourseRequest, CourseSection } from "../types/course";
+import type { CourseRequest, CourseSection } from "@/types/course";
 
 type CourseRequestError = Partial<
   Record<Exclude<keyof CourseRequest, "sections">, string>

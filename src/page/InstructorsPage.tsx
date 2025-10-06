@@ -16,7 +16,7 @@ import {
   useDeleteInstructor,
   useInstructors,
   useUpdateInstructor,
-} from "../hooks/instructor.hooks";
+} from "../hooks/useInstructor";
 import { LoadingSpinner } from "../components/UI/LoadingSpinner";
 import { ErrorMessage } from "../components/UI/ErrorMessage";
 import { Pagination } from "../components/UI/Pagination";

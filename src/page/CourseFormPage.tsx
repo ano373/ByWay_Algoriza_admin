@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { CourseDetailsForm } from "../components/Course/CourseDetailsForm";
 import { useCategories } from "../hooks/useCategories";
-import { useInstructors } from "../hooks/instructor.hooks";
+import { useInstructors } from "../hooks/useInstructor";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import { useCourseSubmit } from "../hooks/useCourseSubmit";
 import { CourseContentForm } from "../components/Course/CourseContentForm";

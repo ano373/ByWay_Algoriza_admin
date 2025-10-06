@@ -2,15 +2,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export const http = axios.create({
-  baseURL: "http://localhost:5184/api",
+  baseURL: "https://byway-fs132.runasp.net/api",
   timeout: 5000,
 });
 
-const Admin_token = import.meta.env.VITE_ADMIN_TOKEN;
-
 http.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken") || Admin_token;
+    const token = localStorage.getItem("jwtToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -28,6 +26,12 @@ http.interceptors.response.use(
     return response;
   },
   (error) => {
+    const url = error.config?.url || "";
+    const excludedEndpoints = ["/auth/me"];
+
+    if (excludedEndpoints.some((endpoint) => url === endpoint)) {
+      return Promise.reject(error);
+    }
     const errors = error.response?.data?.errors;
 
     if (errors && typeof errors === "object") {

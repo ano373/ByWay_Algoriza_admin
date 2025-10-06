@@ -1,8 +1,8 @@
 // hooks/useMultiStepForm.ts
 import { useEffect, useState } from "react";
 import type { CourseRequest, CourseSection } from "../types/course";
-import { useCourse } from "./course.hooks";
-import { validateCourse } from "../validators/courseValidator";
+import { useCourse } from "./useCourse";
+import { validateCourse } from "@/lib/validators/courseValidator";
 
 export const useMultiStepForm = (
   mode: "view" | "edit" | "add",

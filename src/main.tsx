@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./page/DashboardPage.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import InstructorsPage from "./page/InstructorsPage.tsx";
@@ -10,12 +10,21 @@ import { LayoutWithSideBar } from "./components/UI/LayoutWithSideBar.tsx";
 import CoursesPage from "./page/coursesPage.tsx";
 import { Toaster } from "react-hot-toast";
 import { CourseFormPage } from "./page/CourseFormPage.tsx";
+import { ProtectedRoute } from "./components/UI/ProtectedRoute.tsx";
+import LoginPage from "./page/LoginPage.tsx";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     element: <LayoutWithSideBar />,
     children: [
-      { path: "/", element: <App /> },
+      {
+        path: "/",
+        element: (
+          <ProtectedRoute>
+            <App />
+          </ProtectedRoute>
+        ),
+      },
       { path: "/instructors", element: <InstructorsPage /> },
       { path: "/courses", element: <CoursesPage /> },
       { path: "/courses/add", element: <CourseFormPage mode="add" /> },
@@ -29,6 +38,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/login", element: <LoginPage /> },
   { path: "/404", element: <div>404 Not Found page</div> },
 ]);
 
