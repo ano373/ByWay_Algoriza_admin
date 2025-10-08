@@ -4,11 +4,13 @@ import { IoMdListBox } from "react-icons/io";
 import { BsCollection } from "react-icons/bs";
 
 import StatCard from "@components/Dashboard/StatCard";
-import Statistics from "@components/Dashboard/Statistics";
+
 import { LoadingSpinner } from "@components/UI/LoadingSpinner";
 import { ErrorMessage } from "@components/UI/ErrorMessage";
 
 import { useDashboardSummary } from "@/hooks/useDashboardSummary";
+import Statistics from "@/components/Dashboard/Statistics";
+import { WalletChart } from "@/components/Dashboard/WalletChart";
 
 export default function Dashboard() {
   const { data: summary, isLoading, error, refetch } = useDashboardSummary();
@@ -49,17 +51,7 @@ export default function Dashboard() {
 
       {/* Section 2*/}
       <div className="grid grid-cols-[4fr_3fr] gap-8 ml-4 mt-6">
-        <div>
-          {summary && (
-            <Statistics
-              data={[
-                { name: "Instructors", value: summary.instructorsCount },
-                { name: "Categories", value: summary.categoriesCount },
-                { name: "Courses", value: summary.coursesCount },
-              ]}
-            />
-          )}
-        </div>
+        <div>{summary && <WalletChart />}</div>
         <div>
           {summary && (
             <Statistics
