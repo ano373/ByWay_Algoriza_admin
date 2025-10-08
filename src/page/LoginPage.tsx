@@ -61,7 +61,7 @@ export default function LoginPage() {
             <span className="font-bold">Email:</span> admin@byway.com
           </p>
           <p className="text-3xl text-gray-800">
-            <span className="font-bold">Password:</span> admin
+            <span className="font-bold">Password:</span> Admin@123
           </p>
         </div>
 
