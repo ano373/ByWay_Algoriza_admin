@@ -1,4 +1,4 @@
-import type { CourseSummary } from "../../types/course";
+import type { CourseSummary } from "@/types/course";
 import CourseCard from "./CourseCard";
 
 interface CourseCardListProps {

@@ -1,11 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CourseApi } from "../api/CourseApi";
+import { CourseApi } from "@/api/CourseApi";
 import type {
   CoursePaginationParameter,
-  CourseRequest,
   CourseSummary,
-} from "../types/course";
-import type { ApiResponse } from "../types/general";
+  CourseRequest,
+} from "@/types/course";
+import type { ApiResponse } from "@/types/general";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCourses(params?: CoursePaginationParameter) {
   return useQuery({

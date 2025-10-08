@@ -1,7 +1,7 @@
 import { IoAddCircleOutline } from "react-icons/io5";
 import { FaTrashAlt } from "react-icons/fa";
+import type { CourseSection } from "@/types/course";
 import { ContentCard } from "./ContentCard";
-import type { CourseSection } from "../../types/course";
 
 type FormMode = "add" | "edit" | "view";
 type SectionError = Partial<Record<keyof CourseSection, string>>;

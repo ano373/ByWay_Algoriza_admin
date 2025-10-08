@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Instructor } from "../types/Instrcutor";
+import type { Instructor } from "@/types/Instrcutor";
 
 type ModalType =
   | { type: "view"; instructor: Instructor }

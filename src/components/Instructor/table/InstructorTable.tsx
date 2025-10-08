@@ -1,4 +1,4 @@
-import type { Instructor } from "../../../types/Instrcutor";
+import type { Instructor } from "@/types/Instrcutor";
 import { InstructorTableBody } from "./InstructorTableBody";
 import { InstructorTableHeader } from "./InstructorTableHeader";
 

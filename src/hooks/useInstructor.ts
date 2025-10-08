@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { InstructorApi } from "../api/InstructorApi";
+import { InstructorApi } from "@/api/InstructorApi";
 import type {
   Instructor,
   InstructorRequest,

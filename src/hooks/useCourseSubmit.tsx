@@ -1,6 +1,6 @@
+import type { CourseRequest } from "@/types/course";
 import { useNavigate } from "react-router-dom";
 import { useAddCourse, useUpdateCourse } from "./useCourse";
-import type { CourseRequest } from "../types/course";
 
 export const useCourseSubmit = (
   mode: "view" | "edit" | "add",

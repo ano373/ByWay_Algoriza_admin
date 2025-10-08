@@ -2,8 +2,8 @@ import { LiaTrashSolid as DeleteIcon } from "react-icons/lia";
 interface DeletePromptProps {
   label: string; // Entity type, e.g., "user", "post"
   name: string; // Actual entity name, e.g., "Ahmed"
-  onConfirm: () => void; // Called when user confirms deletion
-  onCancel?: () => void; // Optional, called when user cancels
+  onConfirm: () => void;
+  onCancel?: () => void;
 }
 
 export const DeletePrompt = ({

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UserProfilePlaceHolder from "../../assets/profileImg-placeholder.png";
+import UserProfilePlaceHolder from "@/assets/profileImg-placeholder.png";
 
 export default function ProfileImageForm() {
   const [previewUrl, setPreviewUrl] = useState<string>(UserProfilePlaceHolder);

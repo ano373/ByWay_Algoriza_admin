@@ -1,14 +1,14 @@
-import { useState } from "react";
-import type { Mode } from "../../types/general";
-import { StarRating } from "../UI/StarRating";
+import type { Mode } from "@/types/general";
 import {
   type Instructor,
   type InstructorRequest,
   type JobTitle,
   JobTitles,
-} from "../../types/Instrcutor";
-import SelectMenu from "../UI/SelectMenu";
+} from "@/types/Instrcutor";
+import { useState } from "react";
 import { FormField } from "../UI/FormField";
+import SelectMenu from "../UI/SelectMenu";
+import { StarRating } from "../UI/StarRating";
 
 interface InstructorFormProps {
   initialData?: Instructor;

@@ -1,4 +1,4 @@
-import type { category } from "../../types/category";
+import type { category } from "@/types/category";
 import { SearchBar } from "../UI/SearchBar";
 import SelectMenu from "../UI/SelectMenu";
 

@@ -1,5 +1,5 @@
+import type { CourseSection } from "@/types/course";
 import { FormField } from "../UI/FormField";
-import type { CourseSection } from "../../types/course";
 
 interface ContentCardProps {
   formData: Partial<CourseSection>;

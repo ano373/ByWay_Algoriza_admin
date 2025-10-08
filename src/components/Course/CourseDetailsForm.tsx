@@ -1,5 +1,5 @@
-import type { category } from "../../types/category";
-import { Levels, type CourseRequest } from "../../types/course";
+import type { category } from "@/types/category";
+import { type CourseRequest, Levels } from "@/types/course";
 import { FormField } from "../UI/FormField";
 import SelectMenu from "../UI/SelectMenu";
 import { StarRating } from "../UI/StarRating";

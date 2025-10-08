@@ -1,6 +1,6 @@
+import { AuthApi } from "@/api/AuthApi";
+import type { LoginRequest, UserResponse } from "@/types/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { LoginRequest, UserResponse } from "../types/auth";
-import { AuthApi } from "../api/AuthApi";
 import { useNavigate } from "react-router-dom";
 
 export function useLogin() {

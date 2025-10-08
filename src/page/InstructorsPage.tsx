@@ -1,26 +1,26 @@
-import { InstructorTable } from "../components/Instructor/table/InstructorTable";
+import { InstructorTable } from "@components/Instructor/table/InstructorTable";
 import { useCallback, useState } from "react";
-import { InstructorTableToolBar } from "../components/Instructor/table/InstructorTableToolBar";
+import { InstructorTableToolBar } from "@components/Instructor/table/InstructorTableToolBar";
 import {
   type InstructorRequest,
   type InstructorPaginationParameter,
 } from "../types/Instrcutor";
 
-import Modal from "../components/UI/Modal";
-import { DeletePrompt } from "../components/UI/DeletePrompt";
-import InstructorForm from "../components/Instructor/InstructorForm";
-import { useInstructorModals } from "../hooks/useInstructorModals";
+import Modal from "@components/UI/Modal";
+import { DeletePrompt } from "@components/UI/DeletePrompt";
+import InstructorForm from "@components/Instructor/InstructorForm";
+import { useInstructorModals } from "@/hooks/useInstructorModals";
 
 import {
   useAddInstructor,
   useDeleteInstructor,
   useInstructors,
   useUpdateInstructor,
-} from "../hooks/useInstructor";
-import { LoadingSpinner } from "../components/UI/LoadingSpinner";
-import { ErrorMessage } from "../components/UI/ErrorMessage";
-import { Pagination } from "../components/UI/Pagination";
-import { useDashboardSummary } from "../hooks/useDashboardSummary";
+} from "@/hooks/useInstructor";
+import { LoadingSpinner } from "@components/UI/LoadingSpinner";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { Pagination } from "@components/UI/Pagination";
+import { useDashboardSummary } from "@/hooks/useDashboardSummary";
 
 export default function InstructorsPage() {
   const { data: summary } = useDashboardSummary();

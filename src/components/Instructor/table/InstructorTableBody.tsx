@@ -1,6 +1,6 @@
-import { JobTitles, type Instructor } from "../../../types/Instrcutor";
-import { ActionColumn } from "../../UI/ActionColumn";
-import { StarRating } from "../../UI/StarRating";
+import { ActionColumn } from "@/components/UI/ActionColumn";
+import { StarRating } from "@/components/UI/StarRating";
+import { type Instructor, JobTitles } from "@/types/Instrcutor";
 
 interface TableBodyProps {
   instructors: Instructor[];

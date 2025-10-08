@@ -1,4 +1,4 @@
-import { SearchBar } from "../../UI/SearchBar";
+import { SearchBar } from "@/components/UI/SearchBar";
 
 interface InstructorTableToolBar {
   onAddClick: () => void;

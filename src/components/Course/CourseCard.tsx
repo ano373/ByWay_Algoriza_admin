@@ -1,6 +1,6 @@
-import { StarRating } from "../UI/StarRating";
+import type { CourseSummary } from "@/types/course";
 import { ActionColumn } from "../UI/ActionColumn";
-import type { CourseSummary } from "../../types/course";
+import { StarRating } from "../UI/StarRating";
 
 interface CourseCardProps {
   course: CourseSummary;

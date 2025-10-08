@@ -1,17 +1,17 @@
 import { useCallback, useState } from "react";
-import { CourseToolBar } from "../components/Course/CourseToolBar";
-import { useDashboardSummary } from "../hooks/useDashboardSummary";
-import type { CoursePaginationParameter } from "../types/course";
-import { Pagination } from "../components/UI/Pagination";
-import { LoadingSpinner } from "../components/UI/LoadingSpinner";
-import { ErrorMessage } from "../components/UI/ErrorMessage";
-import { useCourses, useDeleteCourser } from "../hooks/useCourse";
+import { CourseToolBar } from "@components/Course/CourseToolBar";
+import { useDashboardSummary } from "@/hooks/useDashboardSummary";
+import type { CoursePaginationParameter } from "@/types/course";
+import { Pagination } from "@components/UI/Pagination";
+import { LoadingSpinner } from "@components/UI/LoadingSpinner";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { useCourses, useDeleteCourser } from "@/hooks/useCourse";
 import { useNavigate } from "react-router-dom";
-import { CourseCardList } from "../components/Course/CourseCardList";
-import { COURSE_PAGE_SIZE } from "../lib/const";
-import Modal from "../components/UI/Modal";
-import { DeletePrompt } from "../components/UI/DeletePrompt";
-import { useCategories } from "../hooks/useCategories";
+import { CourseCardList } from "@components/Course/CourseCardList";
+import { COURSE_PAGE_SIZE } from "@/lib/const";
+import Modal from "@components/UI/Modal";
+import { DeletePrompt } from "@components/UI/DeletePrompt";
+import { useCategories } from "@/hooks/useCategories";
 
 export default function CoursesPage() {
   const { data: summary } = useDashboardSummary();

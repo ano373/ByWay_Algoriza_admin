@@ -1,14 +1,14 @@
-import "../index.css";
+import "@/index.css";
 import { FaRegUser } from "react-icons/fa";
 import { IoMdListBox } from "react-icons/io";
 import { BsCollection } from "react-icons/bs";
 
-import StatCard from "../components/Dashboard/StatCard";
-import Statistics from "../components/Dashboard/Statistics";
-import { LoadingSpinner } from "../components/UI/LoadingSpinner";
-import { ErrorMessage } from "../components/UI/ErrorMessage";
+import StatCard from "@components/Dashboard/StatCard";
+import Statistics from "@components/Dashboard/Statistics";
+import { LoadingSpinner } from "@components/UI/LoadingSpinner";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
 
-import { useDashboardSummary } from "../hooks/useDashboardSummary";
+import { useDashboardSummary } from "@/hooks/useDashboardSummary";
 
 export default function Dashboard() {
   const { data: summary, isLoading, error, refetch } = useDashboardSummary();
