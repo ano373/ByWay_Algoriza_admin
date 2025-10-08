@@ -2,6 +2,7 @@ import type { Mode } from "@/types/general";
 import {
   type Instructor,
   type InstructorRequest,
+  type InstructorRequestError,
   type JobTitle,
   JobTitles,
 } from "@/types/Instrcutor";
@@ -12,6 +13,7 @@ import { StarRating } from "../UI/StarRating";
 
 interface InstructorFormProps {
   initialData?: Instructor;
+  errors?: InstructorRequestError;
   mode: Mode;
   onClose: () => void;
   onSubmit?: (data: InstructorRequest) => void;
@@ -19,6 +21,7 @@ interface InstructorFormProps {
 
 export default function InstructorForm({
   initialData,
+  errors,
   mode,
   onClose,
   onSubmit,
@@ -65,14 +68,13 @@ export default function InstructorForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit?.(formData);
-    onClose();
   };
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <h2 className="text-lg font-bold capitalize">{mode} Instructor</h2>
 
-      <FormField label="Name">
+      <FormField error={errors?.name} label="Name">
         <input
           name="name"
           value={formData.name}
@@ -85,7 +87,7 @@ export default function InstructorForm({
 
       <div className="flex gap-4">
         <div className="flex-1">
-          <FormField label="Job Title">
+          <FormField error={errors?.jobTitle} label="Job Title">
             <SelectMenu
               currentSelection={formData.jobTitle}
               onChange={handleJobTitleChange}
@@ -100,7 +102,7 @@ export default function InstructorForm({
         </div>
 
         <div className="flex-1">
-          <FormField label="Rate">
+          <FormField error={errors?.rating} label="Rate">
             <div className="flex justify-start">
               <StarRating
                 value={formData.rating}
@@ -112,7 +114,7 @@ export default function InstructorForm({
         </div>
       </div>
 
-      <FormField label="Description">
+      <FormField error={errors?.description} label="Description">
         <textarea
           name="description"
           disabled={isView}

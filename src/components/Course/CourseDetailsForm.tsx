@@ -33,10 +33,8 @@ export function CourseDetailsForm({
 
   return (
     <div className="space-y-6">
-      {/* Thumbnail URL */}
       <FormField label="Thumbnail URL" error={errors.thumbnailUrl}>
         <div className="flex gap-4 items-start">
-          {/* Image Preview - Left Side */}
           <div className="w-80 h-52 border border-gray-300 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
             {formData.thumbnailUrl ? (
               <img
@@ -54,7 +52,6 @@ export function CourseDetailsForm({
             )}
           </div>
 
-          {/* URL Input - Right Side */}
           <div className="flex-1">
             <input
               placeholder="Enter image URL..."

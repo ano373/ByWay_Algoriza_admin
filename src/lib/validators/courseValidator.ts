@@ -1,18 +1,9 @@
-import type { CourseRequest, CourseSection } from "@/types/course";
-
-type CourseRequestError = Partial<
-  Record<Exclude<keyof CourseRequest, "sections">, string>
->;
-type SectionError = Partial<Record<keyof CourseSection, string>>;
-
-const isValidUrl = (url: string): boolean => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
+import type {
+  CourseRequest,
+  CourseRequestError,
+  SectionError,
+} from "@/types/course";
+import { isValidUrl } from "../helpers";
 
 export function validateCourse(data: CourseRequest) {
   const courseErrors: CourseRequestError = {};

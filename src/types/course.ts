@@ -53,6 +53,10 @@ export type CourseSection = {
   durationMinutes: number;
   order?: number;
 };
+export type CourseRequestError = Partial<
+  Record<Exclude<keyof CourseRequest, "sections">, string>
+>;
+export type SectionError = Partial<Record<keyof CourseSection, string>>;
 
 export type CoursePaginationParameter = {
   page?: number;

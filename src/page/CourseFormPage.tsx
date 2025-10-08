@@ -7,6 +7,8 @@ import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { useCourseSubmit } from "@/hooks/useCourseSubmit";
 import { CourseContentForm } from "@components/Course/CourseContentForm";
 import { useEffect } from "react";
+import { LoadingSpinner } from "@/components/UI/LoadingSpinner";
+import { ErrorMessage } from "@/components/UI/ErrorMessage";
 
 interface CourseFormPageProps {
   mode: "view" | "edit" | "add";
@@ -58,11 +60,11 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
   };
 
   if (!isAddMode && isLoading) {
-    return <div>Loading course...</div>;
+    return <LoadingSpinner message="loading course..." />;
   }
 
   if (!isAddMode && isError) {
-    return <div>Course not found or error loading course</div>;
+    return <ErrorMessage message="Course not found or error loading course" />;
   }
 
   return (

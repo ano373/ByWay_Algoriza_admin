@@ -19,6 +19,9 @@ export interface InstructorRequest {
   rating: number;
   description: string;
 }
+export type InstructorRequestError = Partial<
+  Record<keyof InstructorRequest, string>
+>;
 
 export interface InstructorPaginationParameter {
   limit?: number;

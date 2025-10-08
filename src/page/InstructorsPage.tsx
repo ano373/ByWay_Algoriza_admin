@@ -4,6 +4,7 @@ import { InstructorTableToolBar } from "@components/Instructor/table/InstructorT
 import {
   type InstructorRequest,
   type InstructorPaginationParameter,
+  type InstructorRequestError,
 } from "../types/Instrcutor";
 
 import Modal from "@components/UI/Modal";
@@ -21,6 +22,7 @@ import { LoadingSpinner } from "@components/UI/LoadingSpinner";
 import { ErrorMessage } from "@components/UI/ErrorMessage";
 import { Pagination } from "@components/UI/Pagination";
 import { useDashboardSummary } from "@/hooks/useDashboardSummary";
+import { validateInstructor } from "@/lib/validators/instructorValidator";
 
 export default function InstructorsPage() {
   const { data: summary } = useDashboardSummary();
@@ -35,6 +37,8 @@ export default function InstructorsPage() {
   );
   const instructors = data?.value ?? [];
 
+  const [errors, setErrors] = useState<InstructorRequestError>({});
+
   const { modal, actions, close } = useInstructorModals();
   //  const meta = data?.meta;
 
@@ -42,23 +46,42 @@ export default function InstructorsPage() {
     if (!modal || modal.type !== "delete") return;
 
     deleteInstructorMutation.mutate(modal.id, {
-      onSettled: () => {
+      onSuccess: () => {
         close();
       },
     });
   }, [modal, deleteInstructorMutation, close]);
 
   const handleEditInstructor = async (data: InstructorRequest) => {
+    const validationErrors = validateInstructor(data);
+
+    const hasErrors = Object.keys(validationErrors).length > 0;
+
+    if (hasErrors) {
+      setErrors(validationErrors);
+      return;
+    }
+
     updateInstructorMutation.mutate(data, {
-      onSettled: () => {
+      onSuccess: () => {
+        setErrors({});
         close();
       },
     });
   };
 
   const handleAddInstructor = async (data: InstructorRequest) => {
+    const validationErrors = validateInstructor(data);
+
+    const hasErrors = Object.keys(validationErrors).length > 0;
+
+    if (hasErrors) {
+      setErrors(validationErrors);
+      return;
+    }
     addInstructorMutation.mutate(data, {
-      onSettled: () => {
+      onSuccess: () => {
+        setErrors({});
         close();
       },
     });
@@ -109,6 +132,7 @@ export default function InstructorsPage() {
               initialData={modal.instructor}
               mode="view"
               onClose={close}
+              errors={errors}
             />
           )}
           {modal.type === "edit" && (
@@ -117,6 +141,7 @@ export default function InstructorsPage() {
               mode="edit"
               onClose={close}
               onSubmit={handleEditInstructor}
+              errors={errors}
             />
           )}
           {modal.type === "add" && (
@@ -124,6 +149,7 @@ export default function InstructorsPage() {
               onSubmit={handleAddInstructor}
               mode="add"
               onClose={close}
+              errors={errors}
             />
           )}
         </Modal>
