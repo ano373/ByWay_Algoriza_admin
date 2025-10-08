@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./page/DashboardPage.tsx";
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import InstructorsPage from "./page/InstructorsPage.tsx";
@@ -12,8 +12,9 @@ import { Toaster } from "react-hot-toast";
 import { CourseFormPage } from "./page/CourseFormPage.tsx";
 import { ProtectedRoute } from "./components/UI/ProtectedRoute.tsx";
 import LoginPage from "./page/LoginPage.tsx";
+import NotFoundPage from "./page/NotFoundPage.tsx";
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     element: <LayoutWithSideBar />,
     children: [
@@ -39,7 +40,7 @@ const router = createHashRouter([
     ],
   },
   { path: "/login", element: <LoginPage /> },
-  { path: "/404", element: <div>404 Not Found page</div> },
+  { path: "*", element: <NotFoundPage /> },
 ]);
 
 const queryClient = new QueryClient();

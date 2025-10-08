@@ -3,6 +3,7 @@ import { type CourseRequest, Levels } from "@/types/course";
 import { FormField } from "../UI/FormField";
 import SelectMenu from "../UI/SelectMenu";
 import { StarRating } from "../UI/StarRating";
+import MDEditor, { commands } from "@uiw/react-md-editor";
 
 type Instructor = {
   instructorId: number;
@@ -152,26 +153,32 @@ export function CourseDetailsForm({
       {/* Description + Certification */}
       <div className="grid grid-cols-2 gap-4">
         <FormField label="Description" error={errors.description}>
-          <textarea
-            placeholder="Write here..."
-            name="description"
+          <MDEditor
             value={formData.description}
-            onChange={(e) => onChange("description", e.target.value)}
-            rows={4}
-            className={inputClass}
-            disabled={isViewMode}
+            onChange={(value) => onChange("description", value || "")}
+            preview={isViewMode ? "preview" : "live"}
+            hideToolbar={isViewMode}
+            height={200}
+            commands={[
+              commands.bold,
+              commands.italic,
+              commands.unorderedListCommand,
+            ]}
           />
         </FormField>
 
         <FormField label="Certification" error={errors.certification}>
-          <textarea
-            placeholder="Write here..."
-            name="certification"
+          <MDEditor
             value={formData.certification}
-            onChange={(e) => onChange("certification", e.target.value)}
-            rows={4}
-            className={inputClass}
-            disabled={isViewMode}
+            onChange={(value) => onChange("certification", value || "")}
+            preview={isViewMode ? "preview" : "live"}
+            hideToolbar={isViewMode}
+            height={200}
+            commands={[
+              commands.bold,
+              commands.italic,
+              commands.unorderedListCommand,
+            ]}
           />
         </FormField>
       </div>

@@ -23,7 +23,7 @@ export function CourseFormPage({ mode }: CourseFormPageProps) {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAddMode && isNaN(courseId)) {
-      navigate("/404", { replace: true });
+      navigate("/notfound", { replace: true });
     }
   }, [courseId, navigate]);
 
