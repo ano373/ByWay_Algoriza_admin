@@ -1,12 +1,12 @@
 import type {
   Instructor,
-  InstructorError,
   InstructorRequest,
+  InstructorRequestError,
 } from "@/types/Instrcutor";
 import { isValidUrl } from "../helpers";
 
 export function validateInstructor(data: Instructor | InstructorRequest) {
-  const errors: InstructorError = {};
+  const errors: InstructorRequestError = {};
 
   // --- Name Validation ---
   if (!data.name.trim()) {
