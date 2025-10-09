@@ -74,6 +74,44 @@ export default function InstructorForm({
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
       <h2 className="text-lg font-bold capitalize">{mode} Instructor</h2>
 
+      <FormField label="Thumbnail URL" error={errors?.profileImageUrl}>
+        <div className="flex gap-4 items-start">
+          <div className="w-48 h-48 mx-auto border border-gray-300 rounded-full overflow-hidden bg-gray-100 flex-shrink-0 shadow-md">
+            {formData.profileImageUrl ? (
+              <img
+                src={formData.profileImageUrl}
+                alt={formData.name || "Profile preview"}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-400">
+                No image
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1">
+            <input
+              placeholder="Enter image URL..."
+              type="text"
+              name="thumbnailUrl"
+              value={formData.profileImageUrl}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  profileImageUrl: e.target.value,
+                }))
+              }
+              className="w-full border border-gray-300 rounded-lg px-3 py-2"
+              disabled={isView}
+            />
+          </div>
+        </div>
+      </FormField>
+
       <FormField error={errors?.name} label="Name">
         <input
           name="name"
