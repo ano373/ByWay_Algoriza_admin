@@ -23,7 +23,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="p-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        className="p-2 rounded bg-gray-200 cursor-pointer hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FaChevronLeft />
       </button>
@@ -33,7 +33,7 @@ export function Pagination({
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`px-3 py-1 rounded ${
+          className={`px-3 py-1 rounded cursor-pointer ${
             currentPage === page
               ? "bg-blue-400 text-white"
               : "bg-gray-100 hover:bg-gray-200"
@@ -47,7 +47,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="p-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+        className="p-2 rounded bg-gray-200 cursor-pointer hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FaChevronRight />
       </button>

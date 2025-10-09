@@ -4,7 +4,12 @@ import type { ApiResponse } from "../types/general";
 
 async function fetchDashboardSummary(): Promise<ApiResponse<DashboardSummary>> {
   const res = await http.get<ApiResponse<DashboardSummary>>(
-    "/dashboard/summary"
+    "/dashboard/summary",
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   );
   return res.data;
 }

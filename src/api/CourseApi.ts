@@ -10,7 +10,14 @@ import type { ApiResponse } from "../types/general";
 async function fetchCourseById(
   id: number
 ): Promise<ApiResponse<CourseDetails>> {
-  const response = await http.get<ApiResponse<CourseDetails>>(`/courses/${id}`);
+  const response = await http.get<ApiResponse<CourseDetails>>(
+    `/courses/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 }
 
@@ -19,12 +26,19 @@ async function fetchCourses(
 ): Promise<ApiResponse<CourseSummary[]>> {
   const response = await http.get<ApiResponse<CourseSummary[]>>(`/courses`, {
     params: params,
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
   return response.data;
 }
 
 async function deleteCourse(id: number): Promise<void> {
-  await http.delete(`/courses/${id}`);
+  await http.delete(`/courses/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 async function addCourse(
@@ -39,7 +53,9 @@ async function addCourse(
 async function updateCourse(
   payload: CourseRequest
 ): Promise<ApiResponse<CourseSummary>> {
-  const response = await http.put(`/courses/${payload.courseId}`, payload);
+  const response = await http.put(`/courses/${payload.courseId}`, payload, {
+    headers: { "Content-Type": "application/json" },
+  });
 
   return response.data;
 }

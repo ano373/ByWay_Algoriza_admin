@@ -43,7 +43,7 @@ function SideBar() {
             <div className="border-t border-gray-200 my-4"></div>
             <button
               onClick={logout}
-              className="flex items-center gap-2 w-full text-gray-600 hover:text-red-500 transition font-medium p-3"
+              className="flex items-center gap-2 w-full cursor-pointer text-gray-600 hover:text-red-500 transition font-medium p-3"
             >
               <FiLogOut className="text-xl" />
               Logout

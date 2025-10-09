@@ -10,7 +10,12 @@ async function fetchInstructorById(
   id: number
 ): Promise<ApiResponse<Instructor>> {
   const response = await http.get<ApiResponse<Instructor>>(
-    `/instructors/${id}`
+    `/instructors/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   );
   return response.data;
 }
@@ -20,12 +25,17 @@ async function fetchInstructors(
 ): Promise<ApiResponse<Instructor[]>> {
   const response = await http.get<ApiResponse<Instructor[]>>(`/instructors`, {
     params: params,
+    headers: { "Content-Type": "application/json" },
   });
   return response.data;
 }
 
 async function deleteInstructor(id: number): Promise<void> {
-  await http.delete(`/instructors/${id}`);
+  await http.delete(`/instructors/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 export async function addInstructor(
@@ -42,7 +52,12 @@ export async function updateInstructor(
 ): Promise<ApiResponse<Instructor>> {
   const response = await http.put(
     `instructors/${payload.instructorId}`,
-    payload
+    payload,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   );
 
   return response.data;

@@ -23,7 +23,7 @@ export default function SelectMenu({
         value={value}
         onChange={onChange}
         disabled={disabled}
-        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-3 
+        className="block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-3 
         text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
       >
         <option value="" disabled>

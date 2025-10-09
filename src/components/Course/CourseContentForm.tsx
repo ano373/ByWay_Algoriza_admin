@@ -83,7 +83,7 @@ export function CourseContentForm({
         <button
           type="button"
           onClick={addSection}
-          className="w-full flex items-center justify-center gap-2 p-3 bg-gray-200 text-gray-700 font-semibold rounded-md hover:bg-gray-300 transition-colors"
+          className="w-full flex items-center cursor-pointer justify-center gap-2 p-3 bg-gray-200 text-gray-700 font-semibold rounded-md hover:bg-gray-300 transition-colors"
         >
           <IoAddCircleOutline size={34} />
           Add Another Section
